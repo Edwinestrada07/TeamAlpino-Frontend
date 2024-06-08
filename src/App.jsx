@@ -7,7 +7,7 @@ import Reminders from './components/Reminders'
 
 const App = () => {
     const [persons, setPersons] = useState([])
-    const [groups, setGroups] = useState({ group1: [], group2: []})
+    const [groups, setGroups] = useState({ group1: [], group2: [] })
 
     //useEffect es un Hook en React que te permite realizar efectos secundarios en componentes funcionales
     useEffect(() => {
@@ -20,13 +20,13 @@ const App = () => {
         fetchPersons //La función fetchPersons se llama inmediatamente después de ser definida, iniciando la solicitud a la API
     }, []) //El segundo argumento de useEffect es una lista de dependencias. Si esta lista está vacía, el efecto solo se ejecutará una vez
 
-    const addPerson = async (name) => {
+    const addPerson = async (person) => {
         const response = await fetch('http://localhost:3000/user', {
             method: 'POST',
             headers: { //Define los encabezados de la solicitud, para indicar que el cuerpo de la solicitud contiene datos en formato JSON
                 'Content-Type': 'application/json'    
             },
-            body: JSON.stringify({ name }) //Convierte el objeto { name } en una cadena JSON 
+            body: JSON.stringify({ person }) //Convierte el objeto { name } en una cadena JSON 
         })
         const data = await response.json()
         setPersons([...persons, data]) //es una función de estado que actualiza el estado persons del componente    
@@ -40,10 +40,10 @@ const App = () => {
     }
 
     return (
-        <div className='contsainer mx-auto p-4'>
+        <div className="container mx-auto p-4">
             <PersonForm addPerson={addPerson}/>
             <PersonList persons={persons}/>
-            <button onClick={gnerateGroups} className='bg-blue-500 text-white p-2 rounded'>
+            <button onClick={gnerateGroups} className="bg-blue-500 text-white p-2 rounded">
                 Generar Grupos
             </button>
             <Groups groups={groups}/>

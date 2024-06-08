@@ -1,9 +1,12 @@
-const PersonList = ({ persons }) => {
+import React from 'react'
 
+const PersonList = ({ persons }) => {
     return (
-        <ul>
-            {persons.map((persons) => (
-                <li key={persons.id} className="border p-2 mb-2">{person.name}</li>
+        <ul className="mb-4">
+            {persons.map((person) => (
+                <li key={person.id} className="border p-2 mb-2">
+                    {person.name} - {person.cell_number}
+                </li>
             ))}
         </ul>
     )
