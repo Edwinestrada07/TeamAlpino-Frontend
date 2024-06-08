@@ -5,11 +5,11 @@ const PersonForm = ({ addPerson }) => {
     const [cellNumber, setCellNumber] = useState('')
 
     const handleSubmit = (e) => {
-        e.preventDefault() //es una llamada que previene el comportamiento predeterminado del formulario de HTML (se llama para evitar que el formulario recargue la página)
+        e.preventDefault() // Previene el comportamiento predeterminado del formulario de HTML (evita que el formulario recargue la página)
         if (name && cellNumber) {
-            addPerson({ name, cell_number: cellNumber }) //Si name y cellNumber no está vacío, se llama a la función addPerson con el nombre proporcionado. addPerson es una función asíncrona
+            addPerson({ name, cell_number: cellNumber }) // Si name y cellNumber no están vacíos, llama a la función addPerson con el nombre y el número proporcionados
             setName('')
-            setCellNumber //reiniciar el campo de entrada del nombre
+            setCellNumber('') // Reinicia el campo de entrada del número de celular
         }
     }
 
@@ -23,7 +23,7 @@ const PersonForm = ({ addPerson }) => {
                 className="border p-2 mr-2"
             />
             <input
-                type="number"
+                type="text"
                 value={cellNumber}
                 onChange={(e) => setCellNumber(e.target.value)}
                 placeholder="Número celular"
@@ -33,7 +33,7 @@ const PersonForm = ({ addPerson }) => {
                 Agregar
             </button>
         </form>
-      )
+    )
 }
 
 export default PersonForm
