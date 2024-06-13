@@ -23,7 +23,7 @@ const PersonForm = ({ addPerson }) => {
                 className="border p-2 mr-2"
             />
             <input
-                type="text"
+                type="number"
                 value={cellNumber}
                 onChange={(e) => setCellNumber(e.target.value)}
                 placeholder="Número celular"

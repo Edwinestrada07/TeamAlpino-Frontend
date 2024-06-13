@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import PersonForm from './components/PersonForm'
 import PersonList from './components/PersonList'
 import Groups from './components/Groups'
@@ -7,7 +7,9 @@ import Reminders from './components/Reminders'
 
 const App = () => {
     const [persons, setPersons] = useState([])
-    const [groups, setGroups] = useState({ group1: [], group2: [] })
+    const [groups, setGroups] = useState({ 
+        group1: [], group2: [] 
+    })
 
     //useEffect es un Hook en React que te permite realizar efectos secundarios en componentes funcionales
     useEffect(() => {
@@ -52,6 +54,18 @@ const App = () => {
         const group2 = shuffled.slice(7, 14)
         setGroups({ group1, group2 })
     }
+    
+    // Funcionalidad para guardar y cargar datos desde el local storage
+    useEffect(() => {
+        const storedPersons = JSON.parse(localStorage.getItem('persons'))
+        if (storedPersons) {
+            setPersons(storedPersons)
+        }
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem('persons', JSON.stringify(persons))
+    }, [persons])
 
     return (
         <div className="container mx-auto p-4">
