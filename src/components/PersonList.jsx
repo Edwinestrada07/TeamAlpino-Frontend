@@ -4,16 +4,18 @@ const PersonList = ({ persons, deletePerson, updatePerson }) => {
     const [editingId, setEditingId] = useState(null)
     const [updateName, setUpdateName] = useState('')
     const [updateCellNumber, setUpdateCellNumber] = useState('')
+    const [updateIsArcher, setUpdateIsArcher] = useState(false)
 
     //controlador de eventos clic
     const handleUpdate = (person) => {
         setEditingId(person.id)
         setUpdateName(person.name)
         setUpdateCellNumber(person.cell_number)
+        setUpdateIsArcher(person.is_archer)
     }
 
     const handleSave = (id) => {
-        updatePerson(id, { name: updateName, cell_number: updateCellNumber })
+        updatePerson(id, { name: updateName, cell_number: updateCellNumber, is_archer: updateIsArcher })
         setEditingId(null)
     }
 
@@ -36,6 +38,15 @@ const PersonList = ({ persons, deletePerson, updatePerson }) => {
                                 onChange={(e) => setUpdateCellNumber(e.target.value)}
                                 className="border p-2 mr-2"
                             />
+                            <label className="mr-2">
+                                <input
+                                    type="checkbox"
+                                    checked={updateIsArcher}
+                                    onChange={(e) => setUpdateIsArcher(e.target.checked)}
+                                    className="mr-1"
+                                />
+                                Arquero
+                            </label>
                             <button onClick={() => handleSave(person.id)} className="bg-blue-500 text-white p-2 rounded mr-2">
                                 Guardar
                             </button>

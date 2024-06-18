@@ -10,6 +10,7 @@ const App = () => {
     const [groups, setGroups] = useState({ 
         group1: [], group2: [] 
     })
+    const [error, setError] = useState('')
 
     //useEffect es un Hook en React que te permite realizar efectos secundarios en componentes funcionales
     useEffect(() => {
@@ -30,6 +31,12 @@ const App = () => {
     }, []) //El segundo argumento de useEffect es una lista de dependencias. Si esta lista está vacía, el efecto solo se ejecutará una vez
 
     const addPerson = async (person) => {
+        //Estructura de control (Bifurcasión)
+        if(person.length >=14) {
+            setError('Ya se ha excedido el número de jugadores')
+            return
+        }
+        
         try {
             const response = await fetch('http://localhost:3000/user', {
                 method: 'POST',
@@ -40,14 +47,15 @@ const App = () => {
             })
 
             if (!response.ok) {
-                throw new Error('La respuesta de la red no fue correcta')
+                const data = await response.json()
+                throw new Error(data.error || 'Error al agregar el usuario.')
             }
 
             const data = await response.json()
             setPersons((prevPersons) => [...prevPersons, data]) // Es una función de estado que actualiza el estado persons del componente
-
+            setError('')
         } catch (error) {
-            console.error('Error al agregar jugador:', error)
+            setError(error.message)
         } 
     }
 
@@ -74,15 +82,17 @@ const App = () => {
             })
 
             if (!response.ok) {
-                throw new Error('La respuesta de la red no fue correcta')
+                const data = await response.json()
+                throw new Error(data.error || 'Error al actualizar el usuario.')
             }
 
             const data = await response.json()
             setPersons((prevPersons) => 
                 prevPersons.map((person) => (person.id === id ? data : person))   
-            )  
+            )
+            setError('')
         } catch (error) {
-            console.error('Error al actualizar jugador:', error)
+            setError(error.message)
         }
     }
 
@@ -106,9 +116,18 @@ const App = () => {
 
     const generateGroups = () => {
         const shuffled = [...persons].sort(() => 0.5 - Math.random())
-        const group1 = shuffled.slice(0, 7)
-        const group2 = shuffled.slice(7, 14)
+        const arqueros = shuffled.filter(person => person.is_archer)
+        const otherPlayer = shuffled.filter(person => !person.is_archer)
+
+        if (arqueros.length < 2) {
+            setError('Debe inscribir al menos dos arqueros')
+            return
+        }
+
+        const group1 = [arqueros[0], ...otherPlayer.slice(0, 6)]
+        const group2 = [arqueros[1], ...otherPlayer.slice(6, 12)]
         setGroups({ group1, group2 })
+        setError('')
     }
     
     // Funcionalidad para guardar y cargar datos desde el local storage
@@ -125,13 +144,14 @@ const App = () => {
 
     return (
         <div className="container mx-auto p-4">
+            {error && <div className="bg-red-500 text-white p-2 rounded mb-4">{error}</div>}
+
             <h1>Lista de Jugadores Lpino</h1>
             <PersonForm addPerson={addPerson} />
             <PersonList 
                 persons={persons}
                 deletePerson={deletePerson}
-                updatePerson={updatePerson}
-                
+                updatePerson={updatePerson}   
             />
             <button onClick={generateGroups} className="bg-blue-500 text-white p-2 rounded">
                 Generar Equipos

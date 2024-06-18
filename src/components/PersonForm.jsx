@@ -3,13 +3,15 @@ import { useState } from "react"
 const PersonForm = ({ addPerson }) => {
     const [name, setName] = useState('')
     const [cellNumber, setCellNumber] = useState('')
+    const [isArcher, setIsArcher] = useState(false)
 
     const handleSubmit = (e) => {
         e.preventDefault() // Previene el comportamiento predeterminado del formulario de HTML (evita que el formulario recargue la página)
         if (name && cellNumber) {
-            addPerson({ name, cell_number: cellNumber }) // Si name y cellNumber no están vacíos, llama a la función addPerson con el nombre y el número proporcionados
+            addPerson({ name, cell_number: cellNumber, is_archer: isArcher }) // Si name y cellNumber no están vacíos, llama a la función addPerson con el nombre y el número proporcionados
             setName('')
             setCellNumber('') // Reinicia el campo de entrada del número de celular
+            setIsArcher(false)
         }
     }
 
@@ -29,6 +31,14 @@ const PersonForm = ({ addPerson }) => {
                 placeholder="Número celular"
                 className="border p-2 mr-2"
             />
+            <label className="mr-2">
+                <input
+                    type="checkbox"
+                    checked={isArcher}
+                    onChange={(e) => setIsArcher(e.target.checked)}
+                />
+                <span>¿Eres Arquero?</span>
+            </label>
             <button type="submit" className="bg-green-500 text-white p-2 rounded">
                 Agregar
             </button>
