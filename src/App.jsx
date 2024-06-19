@@ -4,6 +4,8 @@ import PersonList from './components/PersonList'
 import Groups from './components/Groups'
 import News from './components/News'
 import Reminders from './components/Reminders'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFutbol } from '@fortawesome/free-solid-svg-icons'
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -31,12 +33,6 @@ const App = () => {
     }, []) //El segundo argumento de useEffect es una lista de dependencias. Si esta lista está vacía, el efecto solo se ejecutará una vez
 
     const addPerson = async (person) => {
-        //Estructura de control (Bifurcasión)
-        if(person.length >=14) {
-            setError('Ya se ha excedido el número de jugadores')
-            return
-        }
-        
         try {
             const response = await fetch('http://localhost:3000/user', {
                 method: 'POST',
@@ -67,11 +63,6 @@ const App = () => {
     }
 
     const updatePerson = async (id, updatePerson) => {
-        if (!id) {
-            console.error('ID is undefined or invalid');
-            return;
-        }
-
         try {
             const response = await fetch(`http://localhost:3000/user/${id}`, {
                 method: 'PUT',
@@ -87,9 +78,7 @@ const App = () => {
             }
 
             const data = await response.json()
-            setPersons((prevPersons) => 
-                prevPersons.map((person) => (person.id === id ? data : person))   
-            )
+            setPersons((prevPersons) => prevPersons.map(person => person.id === id ? data : person))  
             setError('')
         } catch (error) {
             setError(error.message)
@@ -146,8 +135,8 @@ const App = () => {
         <div className="container mx-auto p-4">
             {error && <div className="bg-red-500 text-white p-2 rounded mb-4">{error}</div>}
 
-            <h1>Lista de Jugadores Lpino</h1>
-            <PersonForm addPerson={addPerson} />
+            <h1> <FontAwesomeIcon icon={faFutbol} /> Lista de Jugadores Lpino</h1>
+            <PersonForm addPerson={addPerson} persons={persons} />
             <PersonList 
                 persons={persons}
                 deletePerson={deletePerson}

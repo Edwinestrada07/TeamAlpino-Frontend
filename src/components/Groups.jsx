@@ -1,19 +1,28 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHand, faUser } from '@fortawesome/free-solid-svg-icons';
+
 const Groups = ({ groups }) => {
     return (
         <div className="flex justify-between">
-            <div>
-                <h2>Equipo 1</h2>
+            <div className="mb-4">
+                <h2 className="text-lg font-bold">Equipo 1</h2>
                 <ul>
                     {groups.group1.map((person) => (
-                        <li key={person.id} className="border p-2 mb-2">{person.name}</li>
+                        <li key={person.id} className="flex items-center">
+                            {person.is_archer && <FontAwesomeIcon icon={faHand}  className="mr-2 text-blue-500" />}
+                            <span>{person.name}</span>
+                        </li>
                     ))}
                 </ul>
             </div>
             <div>
-                <h2>Equipo 2</h2>
+                <h2 className="text-lg font-bold">Equipo 2</h2>
                 <ul>
-                    {groups.group2.map((person) => (
-                        <li key={person.id} className="border p-2 mb-2">{person.name}</li>        
+                    {groups.group2.map(person => (
+                        <li key={person.id} className="flex items-center">
+                            {person.is_archer && <FontAwesomeIcon icon={faHand} className="mr-2 text-blue-500" />}
+                            <span>{person.name}</span>
+                        </li>
                     ))}
                 </ul>        
             </div>
