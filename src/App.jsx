@@ -135,14 +135,14 @@ const App = () => {
         <div className="container mx-auto p-4">
             {error && <div className="bg-red-500 text-white p-2 rounded mb-4">{error}</div>}
 
-            <h1> <FontAwesomeIcon icon={faFutbol} /> Lista de Jugadores Lpino</h1>
+            <h1 className="font-bold"> <FontAwesomeIcon icon={faFutbol} /> Lista de Jugadores Lpino</h1>
             <PersonForm addPerson={addPerson} persons={persons} />
             <PersonList 
                 persons={persons}
                 deletePerson={deletePerson}
                 updatePerson={updatePerson}   
             />
-            <button onClick={generateGroups} className="bg-blue-500 text-white p-2 rounded">
+            <button onClick={generateGroups} className="bg-blue-500 text-white p-2 rounded justify-center">
                 Generar Equipos
             </button>
             <Groups groups={groups}/>

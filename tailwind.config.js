@@ -1,18 +1,21 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./pages/**/*.html,js",
-    "./components/**/*.html.js",
+    './src/**/*.{js,jsx,ts,tsx}', // Actualiza esta ruta según la estructura de tu proyecto
+    './public/index.html'
   ],
+  darkMode: 'media', // O simplemente elimina esta línea
   theme: {
     extend: {
-      
+      // Tus configuraciones personalizadas aquí
     },
   },
-  plugins: [],
-};
+  plugins: [
+    // Tus plugins aquí
+  ],
+}
+
+
 
 
 
