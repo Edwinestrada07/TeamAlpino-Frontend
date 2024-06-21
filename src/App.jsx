@@ -5,16 +5,15 @@ import Groups from './components/Groups'
 import News from './components/News'
 import Reminders from './components/Reminders'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFutbol } from '@fortawesome/free-solid-svg-icons'
+import { faFutbol, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
 const App = () => {
     const [persons, setPersons] = useState([])
-    const [groups, setGroups] = useState({ 
-        group1: [], group2: [] 
-    })
+    const [groups, setGroups] = useState({ group1: [], group2: [] })
     const [error, setError] = useState('')
     const [showPlayers, setShowPlayers] = useState(false) // Estado para controlar la visibilidad del panel
-
+    const [isLoading, setIsLoading] = useState(false)
+    const [successMessage, setSuccessMessage] = useState('')
 
     //useEffect es un Hook en React que te permite realizar efectos secundarios en componentes funcionales
     useEffect(() => {
@@ -106,21 +105,29 @@ const App = () => {
     }*/
 
     const generateGroups = () => {
-        const shuffled = [...persons].sort(() => 0.5 - Math.random())
-        const arqueros = shuffled.filter(person => person.is_archer)
-        const otherPlayer = shuffled.filter(person => !person.is_archer)
+        setIsLoading(true)
+        setSuccessMessage('')
+        setTimeout(() => {
+            const shuffled = [...persons].sort(() => 0.5 - Math.random())
+            const arqueros = shuffled.filter(person => person.is_archer)
+            const otherPlayers = shuffled.filter(person => !person.is_archer)
 
-        if (arqueros.length < 2) {
-            setError('Debe inscribir al menos dos arqueros')
-            return
-        }
+            if (arqueros.length < 2) {
+                setError('Debe haber al menos dos arqueros.')
+                setIsLoading(false)
+                return
+            }
 
-        const group1 = [arqueros[0], ...otherPlayer.slice(0, 6)]
-        const group2 = [arqueros[1], ...otherPlayer.slice(6, 12)]
+            const group1 = [arqueros[0], ...otherPlayers.slice(0, 6)]
+            const group2 = [arqueros[1], ...otherPlayers.slice(6, 12)]
 
-        setGroups({ group1, group2 })
-        setError('')
-        setShowPlayers(false) // Cerrar el panel deslizante
+            setGroups({ group1, group2 })
+            setError('')
+            setShowPlayers(false) // Cerrar el panel deslizante
+            setIsLoading(false)
+            setSuccessMessage('Equipos generados con éxito')
+            setTimeout(() => setSuccessMessage(''), 3000) // Ocultar el mensaje después de 3 segundos
+        }, 2000) // Simular un tiempo de carga de 2 segundos
     }
     
     // Funcionalidad para guardar y cargar datos desde el local storage
@@ -153,7 +160,7 @@ const App = () => {
                 <div
                     className={`fixed top-0 right-0 h-full bg-gray-900 transition-transform transform duration-500 ${
                         showPlayers ? 'translate-x-0' : 'translate-x-full'
-                    } w-3/4 p-4 overflow-y-auto sm:w-full md:w-3/4`}
+                    } w-3/4 p-4 overflow-y-auto sm:w-full`}
                     style={{ zIndex: 1000 }}
                 >
                     <h2 className="text-xl font-bold text-center text-white">Jugadores Registrados</h2>
@@ -167,8 +174,12 @@ const App = () => {
                     />
 
                     <div className="flex justify-center mt-6">
-                        <button onClick={generateGroups} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-400">
-                            Generar Equipos
+                        <button onClick={generateGroups} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-300">
+                            {isLoading ? (
+                                <FontAwesomeIcon icon={faSpinner} spin />
+                            ) : (
+                                'Generar Equipos'
+                            )}
                         </button>
                     </div>
                 </div>

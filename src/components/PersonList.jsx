@@ -31,7 +31,7 @@ const PersonList = ({ persons, deletePerson, updatePerson }) => {
     }
 
     return (
-        <div className="flex justify-center items-center p-5 bg-gray-900 rounded-lg shadow-lg m-1">            
+        <div className="flex justify-center items-center p-4 bg-gray-900 rounded-lg shadow-lg ">            
             <ul className="grid grid-cols-1 md:grid-cols-5 gap-2 p-3 bg-gray-600 rounded-lg shadow-lg w-11/12 md:w-3/1">
                 {persons.map((person) => (
                     <li key={`${person.name}-${person.cell_number}`} className="bg-gray-700 text-white p-2 rounded shadow-lg flex flex-col justify-between">
@@ -72,7 +72,7 @@ const PersonList = ({ persons, deletePerson, updatePerson }) => {
                             <>
                                 <span className="mb-3">{person.name} - {person.cell_number}</span>
                                 <div className="flex justify-between">
-                                    <button onClick={() => handleUpdate(person)} className="bg-yellow-500 text-white p-3 rounded-lg hover:bg-yellow-600 transition-colors duration-300 mr-2 w-1/2">
+                                    <button onClick={() => handleUpdate(person)} className="bg-yellow-500 text-white p-3 rounded-lg hover:bg-yellow-600 transition-colors duration-300 mr-1 w-1/2">
                                         <FontAwesomeIcon icon={faPen} />
                                     </button>
                                     <button onClick={() => deletePerson(person.id)} className="bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition-colors duration-300 w-1/2">
