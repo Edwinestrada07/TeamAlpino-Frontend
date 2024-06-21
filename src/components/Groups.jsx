@@ -1,6 +1,5 @@
-import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHand, faShirt } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHand, faShirt } from '@fortawesome/free-solid-svg-icons'
 
 const Groups = ({ groups }) => {
     return (
@@ -20,7 +19,7 @@ const Groups = ({ groups }) => {
                 </div>
                 <div>
                     <h2 className="text-xl font-bold text-center text-white">Equipo 2</h2>
-                    <p className="text-xl font-bold text-center text-black shadow-white p-2"> <FontAwesomeIcon icon={faShirt} /> Camiseta Negra / Medias Negras</p>
+                    <p className="text-xl font-bold text-center text-white p-2"> <FontAwesomeIcon icon={faShirt} /> Camiseta Negra / Medias Negras </p><br/>
                     <div className="grid grid-cols-1 gap-4">
                         {groups.group2.map((person, index) => (
                             <div key={index} className="bg-gray-800 text-white p-4 rounded-lg shadow-md flex justify-between items-center">
@@ -32,8 +31,8 @@ const Groups = ({ groups }) => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Groups;
+export default Groups
 

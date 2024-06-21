@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import PersonForm from './components/PersonForm'
 import PersonList from './components/PersonList'
 import Groups from './components/Groups'
-import News from './components/News'
 import Reminders from './components/Reminders'
+import Sidebar from './components/Sidebar'
+
+import News from './pages/News'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFutbol, faSpinner } from '@fortawesome/free-solid-svg-icons'
+
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -14,7 +18,7 @@ const App = () => {
     const [showPlayers, setShowPlayers] = useState(false) // Estado para controlar la visibilidad del panel
     const [isLoading, setIsLoading] = useState(false)
     const [successMessage, setSuccessMessage] = useState('')
-
+    
     //useEffect es un Hook en React que te permite realizar efectos secundarios en componentes funcionales
     useEffect(() => {
         //fetchPersons: Es una función asíncrona que realiza una solicitud a la API
@@ -143,52 +147,64 @@ const App = () => {
     }, [persons])
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-gray-800">
-            <div className="container mx-auto p-6 bg-gray-800 rounded-lg shadow-lg w-11/12 md:w-3/4">
-                {error && <div className="bg-red-500 text-white p-2 rounded mb-4">{error}</div>}
-    
-                <h1 className="text-3xl font-bold text-center text-white mb-6">
-                    <FontAwesomeIcon icon={faFutbol} className="mr-2" /> Lista de Jugadores Lpino
-                </h1>
+        <Router>
+            <div className="flex">
+                <Sidebar />
+                <div className="flex-1 flex justify-center items-center min-h-screen bg-gray-800 ml-16 transition-margin duration-300">
+                    <Routes>
+                        <Route path="/" element={
+                            <div className="container mx-auto p-6 bg-gray-800 rounded-lg shadow-lg w-11/12 md:w-3/4">
+                                {error && <div className="bg-red-500 text-white p-2 rounded mb-4">{error}</div>}
                 
-                <PersonForm addPerson={addPerson} persons={persons} />
+                                <h1 className="text-3xl font-bold text-center text-white mb-6">
+                                    <FontAwesomeIcon icon={faFutbol} className="mr-2" /> Lista de Jugadores Lpino
+                                </h1>
+                                
+                                <PersonForm addPerson={addPerson} persons={persons} />
 
-                <button onClick={() => setShowPlayers(!showPlayers)} className="bg-blue-500 text-white p-3 m-4 rounded-lg hover:bg-blue-600 transition-colors duration-300">
-                    {showPlayers ? 'Ocultar Jugadores Registrados' : 'Visualizar Jugadores Registrados'}
-                </button>
+                                <button onClick={() => setShowPlayers(!showPlayers)} className="bg-blue-500 text-white p-3 m-4 rounded-lg hover:bg-blue-600 transition-colors duration-300">
+                                    {showPlayers ? 'Ocultar Jugadores Registrados' : 'Visualizar Jugadores Registrados'}
+                                </button>
 
-                <div
-                    className={`fixed top-0 right-0 h-full bg-gray-900 transition-transform transform duration-500 ${
-                        showPlayers ? 'translate-x-0' : 'translate-x-full'
-                    } w-3/4 p-4 overflow-y-auto sm:w-full`}
-                    style={{ zIndex: 1000 }}
-                >
-                    <h2 className="text-xl font-bold text-center text-white">Jugadores Registrados</h2>
-                    <button onClick={() => setShowPlayers(false)} className="bg-red-500 text-white p-2 rounded ">
-                        Cerrar
-                    </button>
-                    <PersonList 
-                        persons={persons} 
-                        deletePerson={deletePerson} 
-                        updatePerson={updatePerson} 
-                    />
+                                <div
+                                    className={`fixed top-0 right-0 h-full bg-gray-900 transition-transform transform duration-700 ${
+                                        showPlayers ? 'translate-x-0' : 'translate-x-full'
+                                    } w-3/4 p-4 overflow-y-auto sm:w-full`}
+                                    style={{ zIndex: 1000 }}
+                                >
+                                    <h2 className="text-xl font-bold text-center text-white">Jugadores Registrados</h2>
+                                    <button onClick={() => setShowPlayers(false)} className="bg-red-500 text-white p-2 rounded ">
+                                        Cerrar
+                                    </button>
+                                    <PersonList 
+                                        persons={persons} 
+                                        deletePerson={deletePerson} 
+                                        updatePerson={updatePerson} 
+                                    />
 
-                    <div className="flex justify-center mt-6">
-                        <button onClick={generateGroups} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-300">
-                            {isLoading ? (
-                                <FontAwesomeIcon icon={faSpinner} spin />
-                            ) : (
-                                'Generar Equipos'
-                            )}
-                        </button>
-                    </div>
+                                    <div className="flex justify-center mt-6">
+                                        <button onClick={generateGroups} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-300">
+                                            {isLoading ? (
+                                                <FontAwesomeIcon icon={faSpinner} spin />
+                                            ) : (
+                                                'Generar Equipos'
+                                            )}
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                {successMessage && <div className="bg-green-500 text-white p-2 rounded mt-4 text-center">{successMessage}</div>}
+                                <Groups groups={groups} />
+                            
+                                <Reminders />
+                            </div>
+                        } />
+                        <Route path="/news" element={<News />} />
+                        {/* Añade otras rutas aquí */}
+                    </Routes>
                 </div>
-                
-                <Groups groups={groups} />
-                <News />
-                <Reminders />
             </div>
-        </div>
+        </Router>
     )
     
 }

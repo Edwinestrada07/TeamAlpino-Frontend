@@ -58,6 +58,7 @@ const PersonList = ({ persons, deletePerson, updatePerson }) => {
                                     />
                                     <span className="ml-2"><FontAwesomeIcon icon={faHand} />Arquero</span>
                                 </label>
+                                
                                 {error && <div className="bg-red-500 text-white p-2 rounded mb-4">{error}</div>}
                                 <div className="flex justify-between">
                                     <button onClick={() => handleSave(person.id)} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-300 mr-2 w-1/2">

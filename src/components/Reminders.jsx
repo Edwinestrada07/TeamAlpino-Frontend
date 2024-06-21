@@ -9,7 +9,7 @@ const Reminders = () => {
         setReminders([...reminders, reminder])
         setReminder('')
         }
-    };
+    }
 
     return (
         <div className="mt-4">
