@@ -38,7 +38,7 @@ const Sidebar = () => {
                         <FontAwesomeIcon icon={faNewspaper} className="mr-4" />
                         {isOpen && <span>Noticias</span>}
                     </Link>
-                    <Link to="/payments" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <Link to="/paymentsmethods" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
                         <FontAwesomeIcon icon={faCreditCard} className="mr-4" />
                         {isOpen && <span>Medios de Pago</span>}
                     </Link>

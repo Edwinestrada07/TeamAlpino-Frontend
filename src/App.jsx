@@ -7,9 +7,10 @@ import Reminders from './components/Reminders'
 import Sidebar from './components/Sidebar'
 
 import News from './pages/News'
+import Uniforms from './pages/Uniforms'
+import PaymentMethods from './pages/PaymentMethods'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFutbol, faSpinner } from '@fortawesome/free-solid-svg-icons'
-
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -200,6 +201,8 @@ const App = () => {
                             </div>
                         } />
                         <Route path="/news" element={<News />} />
+                        <Route path="/uniforms" element={<Uniforms />} />
+                        <Route path="/paymentsmethods" element={<PaymentMethods />} />
                         {/* Añade otras rutas aquí */}
                     </Routes>
                 </div>
