@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import PersonForm from './components/PersonForm'
 import PersonList from './components/PersonList'
 import Groups from './components/Groups'
-import Reminders from './components/Reminders'
 import Sidebar from './components/Sidebar'
 
 import News from './pages/News'
@@ -91,23 +90,9 @@ const App = () => {
         }
     }
 
-    /*const toggleStatus = async (id) => {
-        if (!id) {
-            console.error('ID is undefined or invalid')
-            return
-        }
-    
-        const person = persons.find((person) => person.id === id)
-        if (!person) {
-            console.error('Person not found')
-            return
-        }
-    
-        const updatedStatus = person.status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'
-        const updatedPerson = { ...person, status: updatedStatus }
-    
-        await updatePerson(id, updatedPerson)
-    }*/
+    const clearPlayers = () => {
+        setPersons([])
+    }
 
     const generateGroups = () => {
         setIsLoading(true)
@@ -147,6 +132,21 @@ const App = () => {
         localStorage.setItem('persons', JSON.stringify(persons))
     }, [persons])
 
+    // Verificar si es jueves y limpiar la lista de jugadores
+    useEffect(() => {
+        const checkAndClearPlayers = () => {
+            const today = new Date()
+            if (today.getDay() === 4) { // 4 representa el jueves
+                clearPlayers()
+            }
+        }
+
+        checkAndClearPlayers()
+        const interval = setInterval(checkAndClearPlayers, 24 * 60 * 60 * 1000) // Verificar cada día
+
+        return () => clearInterval(interval)
+    }, [])
+
     return (
         <Router>
             <div className="flex">
@@ -161,7 +161,7 @@ const App = () => {
                                     <FontAwesomeIcon icon={faFutbol} className="mr-2" /> Lista de Jugadores Lpino
                                 </h1>
                                 
-                                <PersonForm addPerson={addPerson} persons={persons} />
+                                <PersonForm addPerson={addPerson} persons={persons} clearPlayers={clearPlayers} />
 
                                 <button onClick={() => setShowPlayers(!showPlayers)} className="bg-blue-500 text-white p-3 m-4 rounded-lg hover:bg-blue-600 transition-colors duration-300">
                                     {showPlayers ? 'Ocultar Jugadores Registrados' : 'Visualizar Jugadores Registrados'}
@@ -196,8 +196,7 @@ const App = () => {
                                 
                                 {successMessage && <div className="bg-green-500 text-white p-2 rounded mt-4 text-center">{successMessage}</div>}
                                 <Groups groups={groups} />
-                            
-                                <Reminders />
+                                
                             </div>
                         } />
                         <Route path="/news" element={<News />} />
