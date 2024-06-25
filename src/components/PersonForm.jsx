@@ -2,7 +2,7 @@ import { faHand } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 
-const PersonForm = ({ addPerson, persons, clearPlayers }) => {
+const PersonForm = ({ addPerson, persons }) => {
     const [name, setName] = useState('')
     const [cellNumber, setCellNumber] = useState('')
     const [isArcher, setIsArcher] = useState(false)
@@ -25,7 +25,6 @@ const PersonForm = ({ addPerson, persons, clearPlayers }) => {
             const nextGame = getNextWednesday()
             const daysLeft = Math.ceil((nextGame - new Date()) / (1000 * 60 * 60 * 24))
             setDaysLeft(daysLeft)
-            setNextGameDate(nextGame.toDateString())
 
             // Convert the date to Spanish format
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }
@@ -34,21 +33,10 @@ const PersonForm = ({ addPerson, persons, clearPlayers }) => {
         }
 
         updateGameInfo()
+        const interval = setInterval(updateGameInfo, 24 * 60 * 60 * 1000) // Actualizar cada día
+        return () => clearInterval(interval) // Limpia el intervalo al desmontar
 
-        const checkAndClearPlayers = () => {
-            const today = new Date()
-            if (today.getDay() === 4) { // 4 representa el jueves
-                clearPlayers()
-            }
-        }
-        
-        const interval = setInterval(updateGameInfo, 24 * 60 * 60 * 1000); // Actualizar cada dí
-
-        // Initial check
-        checkAndClearPlayers()
-        
-        return () => clearInterval(interval)
-    }, [clearPlayers])
+    }, [])
 
     const handleSubmit = (e) => {
         e.preventDefault() // Previene el comportamiento predeterminado del formulario de HTML (evita que el formulario recargue la página)
@@ -61,12 +49,12 @@ const PersonForm = ({ addPerson, persons, clearPlayers }) => {
             return
         }
 
-        if(isArcher && archerCount >= 2) {
+        if (isArcher && archerCount >= 2) {
             setError('Ya hay dos arqueros registrados, debe modificar uno')
             return
         }
 
-        if(!isArcher && (totalPersons - archerCount) >= 12) {
+        if (!isArcher && (totalPersons - archerCount) >= 12) {
             setError('Ya se ha excedido el número de jugadores')
             return
         }
@@ -109,22 +97,27 @@ const PersonForm = ({ addPerson, persons, clearPlayers }) => {
                     />
                     <span className="ml-2"><FontAwesomeIcon icon={faHand} />¿Eres Arquero?</span>
                 </label>
-                <button type="submit" className="bg-blue-500 text-white p-3 rounded-lg w-full hover:bg-blue-600 transition-colors duration-300">
+
+                <button 
+                    type="submit" 
+                    className="bg-blue-500 text-white p-2 rounded-lg w-full hover:bg-blue-600 transition-colors duration-300"
+                >
                     Agregar
                 </button>
+
                 <div className="mt-4 text-white">
                     <div className="bg-blue-500 text-white p-4 rounded-lg shadow-lg text-lg font-bold">
                         <h2>Próximo Partido</h2>
                         <p>Fecha: {nextGameDate}</p>
                         <p>Hora: 8:30 PM</p>
                         <p>Ubicación: Cancha La Patria</p>
-                        <p>Número del partido: #{consecutive}</p>
+                        <p>Número partido: # {consecutive}</p>
                         <p>Faltan {daysLeft} días</p>
                     </div>
                 </div>
             </form>
         </div>
-    ) 
+    )
 }
 
 export default PersonForm

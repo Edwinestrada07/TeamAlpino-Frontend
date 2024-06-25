@@ -11,6 +11,8 @@ import PaymentMethods from './pages/PaymentMethods'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFutbol, faSpinner } from '@fortawesome/free-solid-svg-icons'
 
+const authorizedNumbers = ['1234567890', '0987654321'] // Sustituye estos números por los reales
+
 const App = () => {
     const [persons, setPersons] = useState([])
     const [groups, setGroups] = useState({ group1: [], group2: [] })
@@ -18,6 +20,8 @@ const App = () => {
     const [showPlayers, setShowPlayers] = useState(false) // Estado para controlar la visibilidad del panel
     const [isLoading, setIsLoading] = useState(false)
     const [successMessage, setSuccessMessage] = useState('')
+    const [userCellNumber, setUserCellNumber] = useState('') // Estado para el número de celular del usuario
+    const [showVerificationInput, setShowVerificationInput] = useState(false) // Estado para mostrar el campo de verificación
     
     //useEffect es un Hook en React que te permite realizar efectos secundarios en componentes funcionales
     useEffect(() => {
@@ -90,11 +94,12 @@ const App = () => {
         }
     }
 
-    const clearPlayers = () => {
-        setPersons([])
-    }
-
     const generateGroups = () => {
+        if (!authorizedNumbers.includes(userCellNumber)) {
+            setError('El número anteriormente proporcionado no tiene permisos para generar los equipos')
+            return
+        }
+
         setIsLoading(true)
         setSuccessMessage('')
         setTimeout(() => {
@@ -121,7 +126,7 @@ const App = () => {
     }
     
     // Funcionalidad para guardar y cargar datos desde el local storage
-    useEffect(() => {
+    /*useEffect(() => {
         const storedPersons = JSON.parse(localStorage.getItem('persons'))
         if (storedPersons) {
             setPersons(storedPersons)
@@ -130,22 +135,7 @@ const App = () => {
 
     useEffect(() => {
         localStorage.setItem('persons', JSON.stringify(persons))
-    }, [persons])
-
-    // Verificar si es jueves y limpiar la lista de jugadores
-    useEffect(() => {
-        const checkAndClearPlayers = () => {
-            const today = new Date()
-            if (today.getDay() === 4) { // 4 representa el jueves
-                clearPlayers()
-            }
-        }
-
-        checkAndClearPlayers()
-        const interval = setInterval(checkAndClearPlayers, 24 * 60 * 60 * 1000) // Verificar cada día
-
-        return () => clearInterval(interval)
-    }, [])
+    }, [persons])*/
 
     return (
         <Router>
@@ -158,10 +148,10 @@ const App = () => {
                                 {error && <div className="bg-red-500 text-white p-2 rounded mb-4">{error}</div>}
                 
                                 <h1 className="text-3xl font-bold text-center text-white mb-6">
-                                    <FontAwesomeIcon icon={faFutbol} className="mr-2" /> Lista de Jugadores Lpino
+                                    <FontAwesomeIcon icon={faFutbol} className="mr-2 text-2xl" /> Lista de Jugadores Lpino
                                 </h1>
                                 
-                                <PersonForm addPerson={addPerson} persons={persons} clearPlayers={clearPlayers} />
+                                <PersonForm addPerson={addPerson} persons={persons} />
 
                                 <button onClick={() => setShowPlayers(!showPlayers)} className="bg-blue-500 text-white p-3 m-4 rounded-lg hover:bg-blue-600 transition-colors duration-300">
                                     {showPlayers ? 'Ocultar Jugadores Registrados' : 'Visualizar Jugadores Registrados'}
@@ -177,24 +167,50 @@ const App = () => {
                                     <button onClick={() => setShowPlayers(false)} className="bg-red-500 text-white p-2 rounded ">
                                         Cerrar
                                     </button>
+
                                     <PersonList 
                                         persons={persons} 
                                         deletePerson={deletePerson} 
                                         updatePerson={updatePerson} 
                                     />
-
-                                    <div className="flex justify-center mt-6">
-                                        <button onClick={generateGroups} className="bg-blue-500 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-300">
-                                            {isLoading ? (
-                                                <FontAwesomeIcon icon={faSpinner} spin />
-                                            ) : (
-                                                'Generar Equipos'
-                                            )}
-                                        </button>
-                                    </div>
                                 </div>
+
+                                <div className="flex justify-center mt-6">
+                                    <button
+                                        onClick={() => setShowVerificationInput(true)}
+                                        className="bg-green-500 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-300">                                    
+                                        {isLoading ? (
+                                            <FontAwesomeIcon icon={faSpinner} spin />
+                                        ) : (
+                                            'Generar Equipos'
+                                        )}
+                                    </button>
+                                </div>
+
+                                {showVerificationInput && (
+                                    <div className="flex flex-col items-center mt-4">
+                                        <input
+                                            type="text"
+                                            value={userCellNumber}
+                                            onChange={(e) => setUserCellNumber(e.target.value)}
+                                            placeholder="Ingrese el número autorizado"
+                                            className="bg-gray-700 text-white p-2 rounded-lg w-full mb-4"
+                                        />
+                                        <button
+                                            onClick={generateGroups} 
+                                            className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors duration-300">
+                                            Verificar y Generar Equipos
+                                        </button>
+                                        {error && <div className="bg-red-500 text-white p-2 rounded mt-4 text-center w-full">{error}</div>}
+                                    </div>
+                                )}
                                 
-                                {successMessage && <div className="bg-green-500 text-white p-2 rounded mt-4 text-center">{successMessage}</div>}
+                                {successMessage && 
+                                    <div 
+                                        className="bg-green-500 text-white p-2 rounded mt-4 text-center">
+                                        {successMessage}
+                                    </div>
+                                }
                                 <Groups groups={groups} />
                                 
                             </div>
@@ -207,8 +223,7 @@ const App = () => {
                 </div>
             </div>
         </Router>
-    )
-    
+    )   
 }
 
 export default App

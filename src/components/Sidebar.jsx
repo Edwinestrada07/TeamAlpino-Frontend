@@ -15,8 +15,8 @@ const Sidebar = () => {
     }
 
     return (
-        <div 
-            className={`fixed h-screen transition-width duration-300 ${isOpen ? 'w-64' : 'w-16'}`}
+        <div
+            className={`fixed h-screen transition-width duration-300 ${isOpen ? 'w-64' : 'w-16'} z-50`}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
