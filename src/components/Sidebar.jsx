@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHome, faTshirt, faNewspaper, faCreditCard, faFutbol } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faTshirt, faNewspaper, faCreditCard, faFutbol, faChartSimple } from '@fortawesome/free-solid-svg-icons'
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -33,6 +33,10 @@ const Sidebar = () => {
                     <Link to="/uniforms" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
                         <FontAwesomeIcon icon={faTshirt} className="mr-4" />
                         {isOpen && <span>Uniformes</span>}
+                    </Link>
+                    <Link to="/statistics" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                        <FontAwesomeIcon icon={faChartSimple} className="mr-4" />
+                        {isOpen && <span>Estadística Juego</span>}
                     </Link>
                     <Link to="/news" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
                         <FontAwesomeIcon icon={faNewspaper} className="mr-4" />

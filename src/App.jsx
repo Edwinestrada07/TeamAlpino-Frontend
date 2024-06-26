@@ -10,6 +10,7 @@ import Uniforms from './pages/Uniforms'
 import PaymentMethods from './pages/PaymentMethods'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFutbol, faSpinner } from '@fortawesome/free-solid-svg-icons'
+import Statistics from './pages/Statistics'
 
 const authorizedNumbers = ['1234567890', '0987654321'] // Sustituye estos números por los reales
 
@@ -215,6 +216,7 @@ const App = () => {
                                 
                             </div>
                         } />
+                        <Route path="/statistics" element={<Statistics />} />
                         <Route path="/news" element={<News />} />
                         <Route path="/uniforms" element={<Uniforms />} />
                         <Route path="/paymentsmethods" element={<PaymentMethods />} />
