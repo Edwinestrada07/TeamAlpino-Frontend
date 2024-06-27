@@ -1,28 +1,24 @@
 import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import PersonForm from './components/PersonForm'
-import PersonList from './components/PersonList'
-import Groups from './components/Groups'
+
 import Sidebar from './components/Sidebar'
 
 import News from './pages/News'
 import Uniforms from './pages/Uniforms'
 import PaymentMethods from './pages/PaymentMethods'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFutbol, faSpinner } from '@fortawesome/free-solid-svg-icons'
+import { faFutbol } from '@fortawesome/free-solid-svg-icons'
 import Statistics from './pages/Statistics'
 
-const authorizedNumbers = ['123', '456'] // Sustituye estos números por los reales
+
 
 const App = () => {
     const [persons, setPersons] = useState([])
-    const [groups, setGroups] = useState({ group1: [], group2: [] })
+    
     const [error, setError] = useState('')
-    const [showPlayers, setShowPlayers] = useState(false) // Estado para controlar la visibilidad del panel
-    const [isLoading, setIsLoading] = useState(false)
-    const [successMessage, setSuccessMessage] = useState('')
-    const [userCellNumber, setUserCellNumber] = useState('') // Estado para el número de celular del usuario
-    const [showVerificationInput, setShowVerificationInput] = useState(false) // Estado para mostrar el campo de verificación
+    
+    
     
     //useEffect es un Hook en React que te permite realizar efectos secundarios en componentes funcionales
     useEffect(() => {
@@ -65,66 +61,9 @@ const App = () => {
         } 
     }
 
-    const deletePerson = async (id) => {
-        await fetch(`http://localhost:3000/user/${id}`,{
-            method: 'DELETE',
-        })
-        setPersons((prevPersons) => prevPersons.filter(person => person.id !== id))
-    }
+    
 
-    const updatePerson = async (id, updatePerson) => {
-        try {
-            const response = await fetch(`http://localhost:3000/user/${id}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(updatePerson)
-            })
-
-            if (!response.ok) {
-                const data = await response.json()
-                throw new Error(data.error || 'Error al actualizar el usuario.')
-            }
-
-            const data = await response.json()
-            setPersons((prevPersons) => prevPersons.map(person => person.id === id ? data : person))  
-            setError('')
-        } catch (error) {
-            setError(error.message)
-        }
-    }
-
-    const generateGroups = () => {
-        if (!authorizedNumbers.includes(userCellNumber)) {
-            setError('El número anteriormente proporcionado no tiene permisos para generar los equipos')
-            return
-        }
-
-        setIsLoading(true)
-        setSuccessMessage('')
-        setTimeout(() => {
-            const shuffled = [...persons].sort(() => 0.5 - Math.random())
-            const arqueros = shuffled.filter(person => person.is_archer)
-            const otherPlayers = shuffled.filter(person => !person.is_archer)
-
-            if (arqueros.length < 2) {
-                setError('Debe haber al menos dos arqueros.')
-                setIsLoading(false)
-                return
-            }
-
-            const group1 = [arqueros[0], ...otherPlayers.slice(0, 6)]
-            const group2 = [arqueros[1], ...otherPlayers.slice(6, 12)]
-
-            setGroups({ group1, group2 })
-            setError('')
-            setShowPlayers(false) // Cerrar el panel deslizante
-            setIsLoading(false)
-            setSuccessMessage('Equipos generados con éxito')
-            setTimeout(() => setSuccessMessage(''), 3000) // Ocultar el mensaje después de 3 segundos
-        }, 2000) // Simular un tiempo de carga de 2 segundos
-    }
+    
     
     // Funcionalidad para guardar y cargar datos desde el local storage
     /*useEffect(() => {
@@ -142,79 +81,34 @@ const App = () => {
         <Router>
             <div className="flex">
                 <Sidebar />
-                <div className="flex-1 flex justify-center items-center min-h-screen bg-gray-800 ml-16 transition-margin duration-300">
+                <div className="flex-1 flex flex-col justify-center items-center min-h-screen bg-gray-800 ml-16 transition-margin duration-300">
                     <Routes>
-                        <Route path="/" element={
-                            <div className="container mx-auto p-6 bg-gray-800 rounded-lg shadow-lg w-11/12 md:w-3/4">
-                                {error && <div className="bg-red-500 text-white p-2 rounded mb-4">{error}</div>}
-                
-                                <h1 className="text-3xl font-bold text-center text-white mb-6">
-                                    <FontAwesomeIcon icon={faFutbol} className="mr-2 text-2xl" /> Lista de Jugadores Lpino
-                                </h1>
-                                
-                                <PersonForm addPerson={addPerson} persons={persons} />
+                        <Route
+                            path="/"
+                            element={
+                                <div className="container mx-auto p-3 bg-gray-800 rounded-lg shadow-lg w-11/12 md:w-3/4">
+                                    {error && <div className="bg-red-500 text-white p-2 rounded mb-4">{error}</div>}
 
-                                <button onClick={() => setShowPlayers(!showPlayers)} className="bg-blue-500 text-white p-3 m-2 rounded-lg hover:bg-blue-600 transition-colors duration-300">
-                                    {showPlayers ? 'Ocultar Jugadores Registrados' : 'Visualizar Jugadores Registrados'}
-                                </button>
+                                    <h1 className="text-3xl font-bold text-center text-white mb-6">
+                                        <FontAwesomeIcon icon={faFutbol} className="mr-2 text-2xl" /> Lista de Jugadores Lpino
+                                    </h1>
 
-                                <div
-                                    className={`fixed top-0 right-0 h-full bg-gray-900 transition-transform transform duration-700 ${
-                                        showPlayers ? 'translate-x-0' : 'translate-x-full'
-                                    } w-3/4 p-4 overflow-y-auto sm:w-full`}
-                                    style={{ zIndex: 1000 }}
-                                >
-                                    <h2 className="text-xl font-bold text-center text-white">Jugadores Registrados</h2>
-                                    <button onClick={() => setShowPlayers(false)} className="bg-red-500 text-white p-2 rounded ">
-                                        Cerrar
-                                    </button>
+                                    <PersonForm addPerson={addPerson} persons={persons} />
 
-                                    <PersonList 
-                                        persons={persons} 
-                                        deletePerson={deletePerson} 
-                                        updatePerson={updatePerson} 
-                                    />
-                                </div>
-
-                                <div className="flex justify-center">
-                                    <button
-                                        onClick={() => setShowVerificationInput(true)}
-                                        className="bg-green-500 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors duration-300 mr-2">                                    
-                                        {isLoading ? (
-                                            <FontAwesomeIcon icon={faSpinner} spin />
-                                        ) : (
-                                            'Generar Equipos'
-                                        )}
-                                    </button>
-                                    {showVerificationInput && (
-                                        <div className="flex flex-col items-center mr-2">
-                                            <input
-                                                type="text"
-                                                value={userCellNumber}
-                                                onChange={(e) => setUserCellNumber(e.target.value)}
-                                                placeholder="Ingrese Autorización"
-                                                className="bg-gray-700 text-white p-2 rounded-lg"
-                                            />
-                                        </div>
-                                    )}
-                                    <button
-                                            onClick={generateGroups} 
-                                            className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors duration-300">
-                                            Verificar y Generar Equipos
-                                    </button>
-                                </div>
-                                {error && <div className="bg-red-500 text-white p-2 rounded mt-4 text-center w-full">{error}</div>}         
                                     
-                                {successMessage && 
-                                    <div 
-                                        className="bg-green-500 text-white p-2 rounded mt-4 text-center">
-                                        {successMessage}
-                                    </div>
-                                }
-                                <Groups groups={groups} />
-                                
-                            </div>
-                        } />
+
+                                    
+
+                                    
+
+                                    {error && <div className="bg-red-500 text-white p-2 rounded mt-4 text-center w-full">{error}</div>}
+
+                                    
+
+                                    
+                                </div>
+                            }
+                        />
                         <Route path="/statistics" element={<Statistics />} />
                         <Route path="/news" element={<News />} />
                         <Route path="/uniforms" element={<Uniforms />} />
