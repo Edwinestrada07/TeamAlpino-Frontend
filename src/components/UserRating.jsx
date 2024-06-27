@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
 
 const UserRating = ({ userId, initialRating, onRated }) => {
-    const [rating, setRating] = useState(initialRating);
+    const [rating, setRating] = useState(initialRating)
 
     const handleRatingChange = async (newRating) => {
-        setRating(newRating);
+        setRating(newRating)
         try {
             const response = await fetch(`http://localhost:3000/user/${userId}/rating`, {
                 method: 'PUT',
@@ -14,17 +14,17 @@ const UserRating = ({ userId, initialRating, onRated }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ rating: newRating }),
-            });
+            })
 
             if (response.ok) {
                 onRated();
             } else {
-                console.error('Error al enviar la calificación del jugador:', response.statusText);
+                console.error('Error al enviar la calificación del jugador:', response.statusText)
             }
         } catch (error) {
-            console.error('Error al enviar la calificación del jugador:', error);
+            console.error('Error al enviar la calificación del jugador:', error)
         }
-    };
+    }
 
     return (
         <div className="flex items-center">
@@ -37,7 +37,7 @@ const UserRating = ({ userId, initialRating, onRated }) => {
                 />
             ))}
         </div>
-    );
-};
+    )
+}
 
-export default UserRating;
+export default UserRating

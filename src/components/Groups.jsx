@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHand, faShirt } from '@fortawesome/free-solid-svg-icons';
-import UserRating from './UserRating';
+import { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faHand, faShirt } from '@fortawesome/free-solid-svg-icons'
+import UserRating from './UserRating'
 
 const Groups = ({ groups }) => {
-    const [rated, setRated] = useState(false);
+    const [rated, setRated] = useState(false)
 
     const handleRated = () => {
-        setRated(!rated); // Forzar actualización después de calificar
-    };
+        setRated(!rated) // Forzar actualización después de calificar
+    }
 
     return (
         <div className="mt-8">
@@ -23,7 +23,7 @@ const Groups = ({ groups }) => {
                             <div key={index} className="bg-gray-800 text-white p-4 rounded-lg shadow-md">
                                 <div className="flex justify-between items-center">
                                     <span>{person.name}</span>
-                                    {person.is_archer && <FontAwesomeIcon icon={faHand} className="text-blue-500" />}
+                                    {person.is_archer && <FontAwesomeIcon icon={faHand} className="text-blue-500 mr-40" />}
                                     <UserRating userId={person.id} initialRating={person.rating || 0} onRated={handleRated} />
                                 </div>
                             </div>
@@ -40,7 +40,7 @@ const Groups = ({ groups }) => {
                             <div key={index} className="bg-gray-800 text-white p-4 rounded-lg shadow-md">
                                 <div className="flex justify-between items-center">
                                     <span>{person.name}</span>
-                                    {person.is_archer && <FontAwesomeIcon icon={faHand} className="text-blue-500" />}
+                                    {person.is_archer && <FontAwesomeIcon icon={faHand} className="text-blue-500 mr-40" />}
                                     <UserRating userId={person.id} initialRating={person.rating || 0} onRated={handleRated} />
                                 </div>
                             </div>
@@ -49,7 +49,7 @@ const Groups = ({ groups }) => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default Groups;
+export default Groups

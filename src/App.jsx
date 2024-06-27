@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFutbol, faSpinner } from '@fortawesome/free-solid-svg-icons'
 import Statistics from './pages/Statistics'
 
-const authorizedNumbers = ['1234567890', '0987654321'] // Sustituye estos números por los reales
+const authorizedNumbers = ['123', '456'] // Sustituye estos números por los reales
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -154,7 +154,7 @@ const App = () => {
                                 
                                 <PersonForm addPerson={addPerson} persons={persons} />
 
-                                <button onClick={() => setShowPlayers(!showPlayers)} className="bg-blue-500 text-white p-3 m-4 rounded-lg hover:bg-blue-600 transition-colors duration-300">
+                                <button onClick={() => setShowPlayers(!showPlayers)} className="bg-blue-500 text-white p-3 m-2 rounded-lg hover:bg-blue-600 transition-colors duration-300">
                                     {showPlayers ? 'Ocultar Jugadores Registrados' : 'Visualizar Jugadores Registrados'}
                                 </button>
 
@@ -176,36 +176,35 @@ const App = () => {
                                     />
                                 </div>
 
-                                <div className="flex justify-center mt-6">
+                                <div className="flex justify-center">
                                     <button
                                         onClick={() => setShowVerificationInput(true)}
-                                        className="bg-green-500 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-300">                                    
+                                        className="bg-green-500 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors duration-300 mr-2">                                    
                                         {isLoading ? (
                                             <FontAwesomeIcon icon={faSpinner} spin />
                                         ) : (
                                             'Generar Equipos'
                                         )}
                                     </button>
-                                </div>
-
-                                {showVerificationInput && (
-                                    <div className="flex flex-col items-center mt-4">
-                                        <input
-                                            type="text"
-                                            value={userCellNumber}
-                                            onChange={(e) => setUserCellNumber(e.target.value)}
-                                            placeholder="Ingrese el número autorizado"
-                                            className="bg-gray-700 text-white p-2 rounded-lg w-full mb-4"
-                                        />
-                                        <button
+                                    {showVerificationInput && (
+                                        <div className="flex flex-col items-center mr-2">
+                                            <input
+                                                type="text"
+                                                value={userCellNumber}
+                                                onChange={(e) => setUserCellNumber(e.target.value)}
+                                                placeholder="Ingrese Autorización"
+                                                className="bg-gray-700 text-white p-2 rounded-lg"
+                                            />
+                                        </div>
+                                    )}
+                                    <button
                                             onClick={generateGroups} 
                                             className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors duration-300">
                                             Verificar y Generar Equipos
-                                        </button>
-                                        {error && <div className="bg-red-500 text-white p-2 rounded mt-4 text-center w-full">{error}</div>}
-                                    </div>
-                                )}
-                                
+                                    </button>
+                                </div>
+                                {error && <div className="bg-red-500 text-white p-2 rounded mt-4 text-center w-full">{error}</div>}         
+                                    
                                 {successMessage && 
                                     <div 
                                         className="bg-green-500 text-white p-2 rounded mt-4 text-center">
