@@ -54,7 +54,7 @@ const PersonList = ({ persons, deletePerson, updatePerson }) => {
                                         type="checkbox"
                                         checked={updateIsArcher}
                                         onChange={(e) => setUpdateIsArcher(e.target.checked)}
-                                        className="form-checkbox h-5 w-5 text-blue-500 bg-gray-600 border-none rounded focus:ring-2 focus:ring-blue-500"
+                                        className="form-checkbox h-4 w-4 text-blue-500 bg-gray-600 border-none rounded focus:ring-2 focus:ring-blue-500"
                                     />
                                     <span className="ml-2"><FontAwesomeIcon icon={faHand} />Arquero</span>
                                 </label>

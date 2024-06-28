@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import PersonForm from './components/PersonForm'
-import Sidebar from './components/Sidebar'
-
-import Statistics from './pages/Statistics'
-import News from './pages/News'
-import Uniforms from './pages/Uniforms'
-import PaymentMethods from './pages/PaymentMethods'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFutbol } from '@fortawesome/free-solid-svg-icons'
+
+import PersonForm from './components/PersonForm'
+import Sidebar from './components/Sidebar'
+import Groups from './components/Groups'
+
+import Uniforms from './pages/Uniforms'
+import Statistics from './pages/Statistics'
+import News from './pages/News'
+import PaymentMethods from './pages/PaymentMethods'
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -74,9 +76,12 @@ const App = () => {
                                 </div>
                             }
                         />
+                        <Route path="/" exact component={PersonForm} />
+                        <Route path="/groups" component={Groups} />
+
+                        <Route path="/uniforms" element={<Uniforms />} />        
                         <Route path="/statistics" element={<Statistics />} />
                         <Route path="/news" element={<News />} />
-                        <Route path="/uniforms" element={<Uniforms />} />
                         <Route path="/paymentsmethods" element={<PaymentMethods />} />
                         {/* Añade otras rutas aquí */}
                     </Routes>

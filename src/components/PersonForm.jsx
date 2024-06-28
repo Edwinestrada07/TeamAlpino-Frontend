@@ -60,17 +60,20 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
 
         // Validaciones antes de agregar una nueva persona
         if (totalPersons >= 14) {
-            setError('Ya se ha excedido el número máximo de jugadores.')
+            setError('Plantilla completada, ingrese código.')
+            setTimeout(() => setError(''), 2000)
             return
         }
 
         if (isArcher && archerCount >= 2) {
             setError('Ya hay dos arqueros registrados. Debe modificar uno.')
+            setTimeout(() => setError(''), 2000)
             return
         }
 
-        if (!isArcher && (totalPersons - archerCount) >= 12) {
+        if (!isArcher && (totalPersons - archerCount) === 12) {
             setError('Ya se ha excedido el número máximo de jugadores.')
+            setTimeout(() => setError(''), 2000)
             return
         }
 
@@ -100,7 +103,8 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
             setSuccessMessage('Jugador eliminado con éxito')
             setTimeout(() => setSuccessMessage(''), 3000) // Ocultar mensaje de éxito después de 3 segundos
         } catch (error) {
-            setError('Error al eliminar la persona.')
+            setError('Error al eliminar jugador.')
+            setTimeout(() => setError(''), 3000)
         }
     }
 
@@ -128,13 +132,14 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
             setTimeout(() => setSuccessMessage(''), 3000) // Ocultar mensaje de éxito después de 3 segundos
         } catch (error) {
             setError(error.message)
+            setTimeout(() => setError(''), 3000)
         }
     }
 
     // Función para generar grupos aleatorios
     const generateGroups = () => {
         if (!authorizedNumbers.includes(userCellNumber)) {
-            setError('El número de celular proporcionado no tiene permisos para generar equipos.')
+            setError('Código proporcionado sin permisos para generar equipos.')
             return
         }
 
@@ -148,6 +153,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
             if (arqueros.length < 2) {
                 setError('Debe haber al menos dos arqueros registrados para generar equipos.')
                 setIsLoading(false)
+                setTimeout(() => setError(''), 3000)
                 return
             }
 
@@ -165,9 +171,8 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
 
     // Renderizado del componente de formulario y resultados
     return (
-        <div className="flex justify-center items-center p-2 bg-gray-900 rounded-lg shadow-lg">
-            <form onSubmit={handleSubmit} className="bg-gray-800 p-4 rounded-lg shadow-lg w-full max-w-lg">
-                
+        <div className="flex flex-col items-center w-full sm:w-3/4 lg:w-1/2 mx-auto">
+            <form onSubmit={handleSubmit} className="bg-gray-900 p-5 rounded-lg shadow-lg w-full max-w-lg">
                 <input
                     type="text"
                     value={name}
@@ -202,7 +207,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                 {error && <div className="bg-red-500 text-white p-2 rounded mb-2">{error}</div>}
                 {successMessage && <div className="bg-green-500 text-white p-2 rounded mb-2">{successMessage}</div>}
 
-                <div className="text-white">
+                <div className="text-white mb-4">
                     <div className="bg-blue-500 text-white p-2 rounded-lg shadow-lg">
                         <h2>Próximo Partido</h2>
                         <p>Fecha: {nextGameDate}</p>
@@ -213,13 +218,13 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                     </div>
                 </div>
 
-                <div className="flex mt-2">
+                <div className="flex">
                     <input
-                        type="number"
+                        type="password"
                         value={userCellNumber}
                         onChange={(e) => setUserCellNumber(e.target.value)}
                         placeholder="Digitar Código"
-                        className="bg-gray-700 text-white p-2 rounded-l border-none outline-none focus:ring-2 focus:ring-blue-500 w-80"
+                        className="bg-gray-700 text-white p-2 rounded-l border-none outline-none focus:ring-2 focus:ring-blue-500 w-full"
                     />
                     <button
                         onClick={() => setShowPlayers(true)}
@@ -229,7 +234,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                     </button>
                 </div>
 
-                <div className="mt-2">
+                <div className="mt-2 w-full">
                     <button
                         onClick={generateGroups}
                         className="bg-green-500 text-white p-2 rounded w-full hover:bg-green-600 transition-colors duration-300"
@@ -239,16 +244,16 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                 </div>
             </form>
 
-            <div className={`fixed top-0 h-full bg-gray-900 transition-transform transform duration-700 ${showPlayers ? 'translate-x-0' : 'translate-x-full'} w-3/4 p-4 overflow-y-auto sm:w-full`}>
+            <div className={`fixed top-0 h-full w-full bg-gray-900 transition-transform transform duration-700 ${showPlayers ? 'translate-x-0' : 'translate-x-full'} w-3/4 p-4 overflow-y-auto sm:w-full`}>
                 <h2 className="text-2xl font-bold text-center text-white">Jugadores Registrados</h2>
-                <button onClick={() => setShowPlayers(false)} className="bg-red-500 text-white p-2 rounded ml-16">
+                <button onClick={() => setShowPlayers(false)} className="bg-red-500 text-white p-2 rounded ml-5 mt-3">
                     Cerrar
                 </button>
                 <PersonList persons={persons} deletePerson={handleDeletePerson} updatePerson={handleUpdatePerson} />
             </div>
 
             {groups.group1.length > 0 && groups.group2.length > 0 && (
-                <div className="mt-6 w-full max-w-lg">
+                <div className="mt-6 w-full">
                     <Groups groups={groups} />
                 </div>
             )}
@@ -257,3 +262,4 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
 }
 
 export default PersonForm
+
