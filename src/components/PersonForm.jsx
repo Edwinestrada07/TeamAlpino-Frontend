@@ -81,28 +81,22 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
             setCellNumber('')
             setIsArcher(false)
             setError('')
+            setConsecutive(consecutive + 1)
             setSuccessMessage('Jugador registrado con éxito')
             setTimeout(() => setSuccessMessage(''), 3000) // Ocultar mensaje de éxito después de 3 segundos
-            setConsecutive(consecutive + 1)
         } else {
-            setError('Por favor complete todos los campos.')
+            setError('Por favor, complete todos los campos.')
         }
     }
 
     // Función para eliminar una persona por su ID
     const handleDeletePerson = async (id) => {
         try {
-            const response = await fetch(`http://localhost:3000/user/${id}`, {
+            await fetch(`http://localhost:3000/user/${id}`, {
                 method: 'DELETE',
             })
-
-            if (!response.ok) {
-                const data = await response.json()
-                throw new Error(data.error || 'Error al eliminar la persona.')
-            }
-
+            // Llamar a la función deletePerson que está pasada como prop
             deletePerson(id)
-            setError('')
             setSuccessMessage('Jugador eliminado con éxito')
             setTimeout(() => setSuccessMessage(''), 3000) // Ocultar mensaje de éxito después de 3 segundos
         } catch (error) {
@@ -127,6 +121,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
             }
 
             const data = await response.json()
+            // Actualizar personas usando la función updatePerson pasada como prop
             updatePerson(id, data)
             setError('')
             setSuccessMessage('Jugador actualizado con éxito')
@@ -146,137 +141,117 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
         setIsLoading(true)
         setSuccessMessage('')
         setTimeout(() => {
-            try {
-                const shuffled = [...persons].sort(() => 0.5 - Math.random())
-                const arqueros = shuffled.filter(person => person.is_archer)
-                const otherPlayers = shuffled.filter(person => !person.is_archer)
+            const shuffled = [...persons].sort(() => 0.5 - Math.random())
+            const arqueros = shuffled.filter(person => person.is_archer)
+            const otherPlayers = shuffled.filter(person => !person.is_archer)
 
-                if (arqueros.length < 2) {
-                    setError('Debe haber al menos dos arqueros registrados para generar equipos.')
-                    setIsLoading(false)
-                    return
-                }
-
-                const group1 = [arqueros[0], ...otherPlayers.slice(0, 6)]
-                const group2 = [arqueros[1], ...otherPlayers.slice(6, 12)]
-
-                setGroups({ group1, group2 })
-                setError('')
-                setShowPlayers(false)
-                setSuccessMessage('Equipos generados con éxito')
-                setTimeout(() => setSuccessMessage(''), 3000) // Ocultar mensaje de éxito después de 3 segundos
-            } catch (error) {
-                setError('Error al generar los equipos.')
-            } finally {
+            if (arqueros.length < 2) {
+                setError('Debe haber al menos dos arqueros registrados para generar equipos.')
                 setIsLoading(false)
+                return
             }
+
+            const group1 = [arqueros[0], ...otherPlayers.slice(0, 6)]
+            const group2 = [arqueros[1], ...otherPlayers.slice(6, 12)]
+
+            setGroups({ group1, group2 })
+            setError('')
+            setShowPlayers(false)
+            setIsLoading(false)
+            setSuccessMessage('Equipos generados con éxito')
+            setTimeout(() => setSuccessMessage(''), 3000) // Ocultar mensaje de éxito después de 3 segundos
         }, 2000) // Simular tiempo de carga de 2 segundos
     }
 
     // Renderizado del componente de formulario y resultados
     return (
-        <div className="flex justify-center items-center p-6 bg-gray-900 rounded-lg shadow-lg">
-            <form onSubmit={handleSubmit} className="bg-gray-800 p-6 rounded-lg shadow-lg w-100">
-                {error && <div className="bg-red-500 text-white p-2 rounded mb-4">{error}</div>}
-                {successMessage && <div className="bg-green-500 text-white p-2 rounded mb-4">{successMessage}</div>}
-
+        <div className="flex justify-center items-center p-2 bg-gray-900 rounded-lg shadow-lg">
+            <form onSubmit={handleSubmit} className="bg-gray-800 p-4 rounded-lg shadow-lg w-full max-w-lg">
+                
                 <input
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="Nombre"
-                    className="bg-gray-700 text-white p-3 mb-3 rounded border-none outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                    className="bg-gray-700 text-white p-2 mb-2 rounded border-none outline-none focus:ring-2 focus:ring-blue-500 w-full"
                 />
                 <input
                     type="number"
                     value={cellNumber}
                     onChange={(e) => setCellNumber(e.target.value)}
                     placeholder="Número de celular"
-                    className="bg-gray-700 text-white p-3 mb-3 rounded border-none outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                    className="bg-gray-700 text-white p-2 mb-2 rounded border-none outline-none focus:ring-2 focus:ring-blue-500 w-full"
                 />
                 <label className="flex items-center mb-3 text-white">
                     <input
                         type="checkbox"
                         checked={isArcher}
                         onChange={(e) => setIsArcher(e.target.checked)}
-                        className="form-checkbox h-5 w-5 text-blue-500 bg-gray-700 border-none rounded focus:ring-2 focus:ring-blue-500"
+                        className="form-checkbox h-4 w-4 text-blue-500 bg-gray-700 border-none rounded focus:ring-2 focus:ring-blue-500"
                     />
-                    <span className="ml-2"><FontAwesomeIcon icon={faHand} />¿Eres arquero?</span>
+                    <span className="ml-2"><FontAwesomeIcon icon={faHand} /> ¿Eres arquero?</span>
                 </label>
 
                 <button
                     type="submit"
-                    className="bg-blue-500 text-white p-2 rounded-lg w-full hover:bg-blue-600 transition-colors duration-300"
+                    className="bg-blue-500 text-white p-2 rounded-lg w-full hover:bg-blue-600 transition-colors duration-300 mb-2"
                 >
                     Agregar
                 </button>
 
-                <div className="mt-4 text-white">
-                    <div className="bg-blue-500 text-white p-4 rounded-lg shadow-lg text-lg font-bold">
+                {error && <div className="bg-red-500 text-white p-2 rounded mb-2">{error}</div>}
+                {successMessage && <div className="bg-green-500 text-white p-2 rounded mb-2">{successMessage}</div>}
+
+                <div className="text-white">
+                    <div className="bg-blue-500 text-white p-2 rounded-lg shadow-lg">
                         <h2>Próximo Partido</h2>
                         <p>Fecha: {nextGameDate}</p>
                         <p>Hora: 8:30 PM</p>
-                        <p>Ubicación: Cancha La Patria</p>
-                        <p>Número partido: # {consecutive}</p>
-                        <p>Faltan {daysLeft} días</p>
+                        <p>Ubicación: Pista de Santana</p>
+                        <p>Días restantes: {daysLeft}</p>
+                        <p>Consecutiva: {consecutive}</p>
                     </div>
                 </div>
 
-                <div className={`fixed top-0 right-1 h-full bg-gray-900 transition-transform transform duration-700 ${showPlayers ? 'translate-x-0' : 'translate-x-full'} w-3/4 p-4 overflow-y-auto sm:w-full`}>
-                    <h2 className="text-xl font-bold text-center text-white">Jugadores Registrados</h2>
-                    <button onClick={() => setShowPlayers(false)} className="bg-red-500 text-white p-2 rounded">
-                        Cerrar
-                    </button>
-                    <PersonList persons={persons} deletePerson={handleDeletePerson} updatePerson={handleUpdatePerson} />
-                </div>
-
-                <div className="flex flex-col sm:flex-row justify-center items-center mb-4">
+                <div className="flex mt-2">
+                    <input
+                        type="number"
+                        value={userCellNumber}
+                        onChange={(e) => setUserCellNumber(e.target.value)}
+                        placeholder="Digitar Código"
+                        className="bg-gray-700 text-white p-2 rounded-l border-none outline-none focus:ring-2 focus:ring-blue-500 w-80"
+                    />
                     <button
-                        onClick={() => {
-                            try {
-                                setShowPlayers(!showPlayers)
-                                setSuccessMessage('Jugadores mostrados con éxito')
-                                setTimeout(() => setSuccessMessage(''), 3000) // Ocultar mensaje de éxito después de 3 segundos
-                            } catch (error) {
-                                setError('Error al mostrar los jugadores registrados.')
-                            }
-                        }}
-                        className="bg-blue-500 text-white p-2 m-2 rounded-lg hover:bg-blue-600 transition-colors duration-300"
+                        onClick={() => setShowPlayers(true)}
+                        className="bg-blue-500 text-white p-2 rounded-r hover:bg-blue-600 transition-colors duration-300 ml-2 w-full"
                     >
-                        {showPlayers ? 'Ocultar Jugadores Registrados' : 'Visualizar Jugadores Registrados'}
-                    </button>
-                    <button
-                        onClick={() => setShowVerificationInput(true)}
-                        className="bg-green-500 text-white p-2 m-2 rounded-lg hover:bg-blue-600 transition-colors duration-300"
-                    >
-                        {isLoading ? (
-                            <FontAwesomeIcon icon={faSpinner} spin />
-                        ) : (
-                            'Generar Equipos'
-                        )}
+                        Ver Jugadores Registrados
                     </button>
                 </div>
 
-                {showVerificationInput && (
-                    <div className="flex flex-col sm:flex-row justify-center items-center mt-4 mb-4">
-                        <input
-                            type="text"
-                            value={userCellNumber}
-                            onChange={(e) => setUserCellNumber(e.target.value)}
-                            placeholder="Ingrese Autorización"
-                            className="bg-gray-700 text-white p-2 rounded-lg mb-2 sm:mb-0 sm:mr-2"
-                        />
-                        <button
-                            onClick={generateGroups}
-                            className="bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600 transition-colors duration-300"
-                        >
-                            Verificar y Generar Equipos
-                        </button>
-                    </div>
-                )}
-
-                <Groups groups={groups} />
+                <div className="mt-2">
+                    <button
+                        onClick={generateGroups}
+                        className="bg-green-500 text-white p-2 rounded w-full hover:bg-green-600 transition-colors duration-300"
+                    >
+                        {isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : 'Generar equipos'}
+                    </button>
+                </div>
             </form>
+
+            <div className={`fixed top-0 h-full bg-gray-900 transition-transform transform duration-700 ${showPlayers ? 'translate-x-0' : 'translate-x-full'} w-3/4 p-4 overflow-y-auto sm:w-full`}>
+                <h2 className="text-2xl font-bold text-center text-white">Jugadores Registrados</h2>
+                <button onClick={() => setShowPlayers(false)} className="bg-red-500 text-white p-2 rounded ml-16">
+                    Cerrar
+                </button>
+                <PersonList persons={persons} deletePerson={handleDeletePerson} updatePerson={handleUpdatePerson} />
+            </div>
+
+            {groups.group1.length > 0 && groups.group2.length > 0 && (
+                <div className="mt-6 w-full max-w-lg">
+                    <Groups groups={groups} />
+                </div>
+            )}
         </div>
     )
 }

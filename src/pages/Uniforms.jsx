@@ -24,7 +24,7 @@ const Uniforms = () => {
     ]
 
     return (
-        <section className="bg-gray-900 p-6 text-white text-center">
+        <section className="flex-1 flex flex-col justify-center items-center min-h-screen bg-gray-900">
             <h1 className="text-3xl font-bold text-center text-white mb-6">
                 <FontAwesomeIcon icon={faShirt} className="mr-2 text-2xl" /> Uniformes de Jugadores Lpino
             </h1>

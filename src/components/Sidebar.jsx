@@ -20,10 +20,10 @@ const Sidebar = () => {
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <div className={`bg-gray-600 text-white h-full ${isOpen ? 'w-64' : 'w-16'}`}>
+            <div className={`bg-gray-700 text-white h-full ${isOpen ? 'w-64' : 'w-16'}`}>
                 <div className="p-4">
                     <FontAwesomeIcon icon={faFutbol} className="mr-2" />
-                    <h1 className={`text-xl font-bold ${isOpen ? 'block' : 'hidden'}`}>Team Lpino</h1>
+                    <h1 className={`text-2xl font-bold ${isOpen ? 'block' : 'hidden'}`}>Team Lpino</h1>
                 </div>
                 <nav className="mt-2">
                     <Link to="/" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">

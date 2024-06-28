@@ -11,7 +11,7 @@ const News = () => {
     }
 
     return (
-        <section className="bg-gray-900 p-6 text-white text-center">
+        <section className="flex-1 flex flex-col justify-center items-center min-h-screen bg-gray-900">
             <h1 className="text-3xl font-bold text-center text-white mb-6">
                 <FontAwesomeIcon icon={faNewspaper} className="mr-2 text-2xl" /> Enlaces de Interés
             </h1>
@@ -24,7 +24,7 @@ const News = () => {
                     backgroundPosition: 'center',
                     backgroundRepeat: 'no-repeat',
                     height: '200px',
-                }}
+                    }}
             >
                 <div className="container px-3 py-20 mx-auto bg-gray-900 bg-opacity-50 rounded-lg h-full flex items-center">
                     <div className="lg:w-2/3 flex flex-col sm:flex-row sm:items-center items-start mx-auto">

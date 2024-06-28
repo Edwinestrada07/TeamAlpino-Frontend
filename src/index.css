@@ -16,3 +16,46 @@
     animation: slide-in-slow 0.5s forwards;
 }
 
+/* Animación de rebote lento */
+@keyframes bounce-slow {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+.animate-bounce-slow {
+    animation: bounce-slow 2s infinite;
+}
+
+/* Animación de giro lento */
+@keyframes spin-slow {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin-slow {
+    animation: spin-slow 10s infinite linear;
+}
+
+/* Estilos para la animación de deslizamiento */
+@keyframes slide-in-slow {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+.animate-slide-in-slow {
+    animation: slide-in-slow 0.5s forwards;
+}
+
+
