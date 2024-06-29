@@ -1,16 +1,29 @@
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFutbol, faHand, faShirt, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faChartSimple, faFutbol, faHand, faShirt, faTimes } from '@fortawesome/free-solid-svg-icons'
 import UserRating from './UserRating'
 import { useNavigate } from 'react-router-dom'
 
 const Groups = ({ groups }) => {
     const [rated, setRated] = useState(false)
     const [showPanel, setShowPanel] = useState(false)
+    const [playerRatings, setPlayerRatings] = useState({
+        group1: groups.group1,
+        group2: groups.group2,
+    })
     const navigate = useNavigate()
 
     // Maneja el estado de calificación
-    const handleRated = () => {
+    const handleRated = (group, playerId, newRating) => {
+        setPlayerRatings((prevRatings) => {
+            const updatedGroup = prevRatings[group].map((player) => {
+                if (player.id === playerId) {
+                    return { ...player, rating: newRating }
+                }
+                return player
+            });
+            return { ...prevRatings, [group]: updatedGroup }
+        })
         setRated(!rated) // Forzar actualización después de calificar
     }
 
@@ -26,7 +39,8 @@ const Groups = ({ groups }) => {
 
     // Redirige a la página de estadísticas
     const handleViewStatistics = () => {
-        navigate('/statistics')
+        const sortedPlayers = [...playerRatings.group1, ...playerRatings.group2].sort((a, b) => b.rating - a.rating)
+        navigate('/statistics', { state: { sortedPlayers } })
     }
 
     return (
@@ -53,12 +67,12 @@ const Groups = ({ groups }) => {
                                 <FontAwesomeIcon icon={faShirt} /> Camiseta Blanca / Medias Blancas
                             </p>
                             <div className="grid grid-cols-1 gap-4">
-                                {groups.group1.map((person, index) => (
+                                {playerRatings.group1.map((person, index) => (
                                     <div key={index} className="bg-gray-800 text-white p-2 rounded-lg shadow-md">
                                         <div className="flex justify-between items-center">
                                             <span className="truncate">{person.name}</span>
                                             {person.is_archer && <FontAwesomeIcon icon={faHand} className="text-blue-500 mr-40" />}
-                                            <UserRating userId={person.id} initialRating={person.rating || 0} onRated={handleRated} />
+                                            <UserRating userId={person.id} initialRating={person.rating || 0} onRated={(newRating) => handleRated('group1', person.id, newRating)} />
                                         </div>
                                     </div>
                                 ))}
@@ -70,12 +84,12 @@ const Groups = ({ groups }) => {
                                 <FontAwesomeIcon icon={faShirt} /> Camiseta Negra / Medias Negras
                             </p>
                             <div className="grid grid-cols-1 gap-4">
-                                {groups.group2.map((person, index) => (
+                                {playerRatings.group2.map((person, index) => (
                                     <div key={index} className="bg-gray-800 text-white p-2 rounded-lg shadow-md">
                                         <div className="flex justify-between items-center">
                                             <span className="truncate">{person.name}</span>
                                             {person.is_archer && <FontAwesomeIcon icon={faHand} className="text-blue-500 mr-40" />}
-                                            <UserRating userId={person.id} initialRating={person.rating || 0} onRated={handleRated} />
+                                            <UserRating userId={person.id} initialRating={person.rating || 0} onRated={(newRating) => handleRated('group2', person.id, newRating)} />
                                         </div>
                                     </div>
                                 ))}
@@ -85,10 +99,12 @@ const Groups = ({ groups }) => {
                     <div className="mt-6 text-center">
                         <button 
                             onClick={handleViewStatistics}
-                            className="bg-green-500 text-white p-3 rounded-lg hover:bg-green-600 transition-colors duration-300 animate-bounce-slow"
+                            className="bg-green-500 text-white font-bold p-3 rounded-lg hover:bg-green-600 transition-colors duration-300 animate-bounce-slow"
                         >
+                            <FontAwesomeIcon icon={faChartSimple} className="mr-3" />
                             Estadísticas del partido
                         </button>
+                        
                     </div>
                 </div>
             )}
