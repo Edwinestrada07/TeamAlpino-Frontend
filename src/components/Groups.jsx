@@ -21,7 +21,7 @@ const Groups = ({ groups }) => {
                     return { ...player, rating: newRating }
                 }
                 return player
-            });
+            })
             return { ...prevRatings, [group]: updatedGroup }
         })
         setRated(!rated) // Forzar actualización después de calificar
@@ -66,12 +66,12 @@ const Groups = ({ groups }) => {
                             <p className="text-xl font-bold text-center text-white p-2">
                                 <FontAwesomeIcon icon={faShirt} /> Camiseta Blanca / Medias Blancas
                             </p>
-                            <div className="grid grid-cols-1 gap-4">
+                            <div className="grid grid-cols-1 gap-3">
                                 {playerRatings.group1.map((person, index) => (
-                                    <div key={index} className="bg-gray-800 text-white p-2 rounded-lg shadow-md">
+                                    <div key={index} className="bg-gray-800 text-white p-1 rounded-lg shadow-md">
                                         <div className="flex justify-between items-center">
                                             <span className="truncate">{person.name}</span>
-                                            {person.is_archer && <FontAwesomeIcon icon={faHand} className="text-blue-500 mr-40" />}
+                                            {person.is_archer && <FontAwesomeIcon icon={faHand} className="text-blue-500 mr-32" />}
                                             <UserRating userId={person.id} initialRating={person.rating || 0} onRated={(newRating) => handleRated('group1', person.id, newRating)} />
                                         </div>
                                     </div>
@@ -83,12 +83,12 @@ const Groups = ({ groups }) => {
                             <p className="text-xl font-bold text-center text-black p-2">
                                 <FontAwesomeIcon icon={faShirt} /> Camiseta Negra / Medias Negras
                             </p>
-                            <div className="grid grid-cols-1 gap-4">
+                            <div className="grid grid-cols-1 gap-3">
                                 {playerRatings.group2.map((person, index) => (
-                                    <div key={index} className="bg-gray-800 text-white p-2 rounded-lg shadow-md">
+                                    <div key={index} className="bg-gray-800 text-white p-1 rounded-lg shadow-md">
                                         <div className="flex justify-between items-center">
                                             <span className="truncate">{person.name}</span>
-                                            {person.is_archer && <FontAwesomeIcon icon={faHand} className="text-blue-500 mr-40" />}
+                                            {person.is_archer && <FontAwesomeIcon icon={faHand} className="text-blue-500 mr-32" />}
                                             <UserRating userId={person.id} initialRating={person.rating || 0} onRated={(newRating) => handleRated('group2', person.id, newRating)} />
                                         </div>
                                     </div>

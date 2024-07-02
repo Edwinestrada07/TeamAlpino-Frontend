@@ -11,6 +11,7 @@ import Uniforms from './pages/Uniforms'
 import Statistics from './pages/Statistics'
 import News from './pages/News'
 import PaymentMethods from './pages/PaymentMethods'
+import UserProfile from './components/UserProfile'
 
 const App = () => {
     const [persons, setPersons] = useState([])
@@ -78,8 +79,9 @@ const App = () => {
                         />
                         <Route path="/" exact component={PersonForm} />
                         <Route path="/groups" component={Groups} />
-
-                        <Route path="/uniforms" element={<Uniforms />} />        
+                        
+                        <Route path="/uniforms" element={<Uniforms />} />
+                        <Route path="/userprofile" element={<UserProfile />} />       
                         <Route path="/statistics" element={<Statistics />} />
                         <Route path="/news" element={<News />} />
                         <Route path="/paymentsmethods" element={<PaymentMethods />} />
