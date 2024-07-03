@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar, faShoePrints, faFutbol } from '@fortawesome/free-solid-svg-icons';
 
@@ -8,32 +8,8 @@ const UserRating = ({ userId, initialRating, initialAttendance, initialGoals, on
     const [goals, setGoals] = useState(initialGoals);
 
     const handleRatingChange = async (newRating) => {
-        if (newRating === 1 && rating === 1) {
-            setRating(0);
-
-            try {
-                const response = await fetch(`http://localhost:3000/user/${userId}/rating`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ rating: null }),
-                });
-
-                if (response.ok) {
-                    onRated();
-                } else {
-                    console.error('Error al reiniciar la calificación del jugador:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Error al reiniciar la calificación del jugador:', error);
-            }
-
-            return;
-        }
-
-        setRating(newRating)
-
+        const previousRating = rating;
+        setRating(newRating);
         try {
             const response = await fetch(`http://localhost:3000/user/${userId}/rating`, {
                 method: 'PUT',
@@ -43,19 +19,42 @@ const UserRating = ({ userId, initialRating, initialAttendance, initialGoals, on
                 body: JSON.stringify({ rating: newRating }),
             });
 
-            if (response.ok) {
-                onRated();
-            } else {
-                console.error('Error al enviar la calificación del jugador:', response.statusText);
+            if (!response.ok) {
+                throw new Error('Error al enviar la calificación del jugador');
             }
+            onRated();
         } catch (error) {
-            console.error('Error al enviar la calificación del jugador:', error);
+            console.error(error);
+            setRating(previousRating);
+        }
+    };
+
+    const handleGoalsChange = async (newGoals) => {
+        const previousGoals = goals;
+        setGoals(newGoals);
+        try {
+            const response = await fetch(`http://localhost:3000/user/${userId}/goals`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ goals: newGoals }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error al actualizar los goles');
+            }
+            onRated();
+        } catch (error) {
+            console.error(error);
+            setGoals(previousGoals);
         }
     };
 
     const handleAttendanceChange = async (newAttendance) => {
+        const previousAttendance = attendance;
         setAttendance(newAttendance);
-
         try {
             const response = await fetch(`http://localhost:3000/user/${userId}/attendance`, {
                 method: 'PUT',
@@ -65,40 +64,41 @@ const UserRating = ({ userId, initialRating, initialAttendance, initialGoals, on
                 body: JSON.stringify({ attendance: newAttendance }),
             });
 
-            if (response.ok) {
-                onRated();
-            } else {
-                console.error('Error al enviar la asistencia del jugador:', response.statusText);
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Error al actualizar las asistencias');
             }
+            onRated();
         } catch (error) {
-            console.error('Error al enviar la asistencia del jugador:', error);
+            console.error(error);
+            setAttendance(previousAttendance);
         }
     };
 
-    const handleGoalsChange = async (newGoals) => {
-        setGoals(newGoals)
-    
-        try {
-            const response = await fetch(`http://localhost:3000/user/${userId}/goals`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ goals: newGoals }), // Asegúrate de enviar los goles correctamente
-            });
-    
-            if (!response.ok) {
-                console.error('Error al actualizar los goles:', response.statusText);
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/user/${userId}`);
+                if (!response.ok) {
+                    throw new Error('Usuario no encontrado');
+                }
+                const data = await response.json();
+                setRating(data.rating);
+                setAttendance(data.attendance);
+                setGoals(data.goals);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
             }
-        } catch (error) {
-            console.error('Error al actualizar los goles:', error);
+        };
+
+        if (userId) {
+            fetchUserData();
         }
-    };
-    
+    }, [userId]);
 
     return (
         <div className="flex flex-col items-center">
-            <div className="flex items-center mb-4">
+            <div className="flex mb-2">
                 {[1, 2, 3, 4, 5].map((star) => (
                     <FontAwesomeIcon
                         key={star}
@@ -108,7 +108,7 @@ const UserRating = ({ userId, initialRating, initialAttendance, initialGoals, on
                     />
                 ))}
             </div>
-            <div className="flex space-x-5">
+            <div className="flex space-x-10">
                 <div className="flex items-center">
                     <FontAwesomeIcon
                         icon={faFutbol}
@@ -120,10 +120,10 @@ const UserRating = ({ userId, initialRating, initialAttendance, initialGoals, on
                 <div className="flex items-center">
                     <FontAwesomeIcon
                         icon={faShoePrints}
-                        className={`cursor-pointer ${attendance ? 'text-green-500' : 'text-gray-400'}`}
-                        onClick={() => handleAttendanceChange(!attendance)}
+                        className="cursor-pointer text-gray-400"
+                        onClick={() => handleAttendanceChange(attendance + 1)}
                     />
-                    <span className="ml-2">Asistencias</span>
+                    <span className="ml-2">{attendance} Asistencias</span>
                 </div>
             </div>
         </div>
