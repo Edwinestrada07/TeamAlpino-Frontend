@@ -1,15 +1,23 @@
 import { faChartSimple } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useLocation } from 'react-router-dom'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    ResponsiveContainer
+} from 'recharts'
 
 const Statistics = () => {
     const location = useLocation()
-    const { sortedPlayers } = location.state || { sortedPlayers: [] }
+    const { sortedPlayers = [] } = location.state || {}
 
-    // Calcular calificación promedio
-    const averageRating = sortedPlayers.length > 0 
-        ? sortedPlayers.reduce((acc, player) => acc + player.rating, 0) / sortedPlayers.length 
+    const averageRating = sortedPlayers.length > 0
+        ? sortedPlayers.reduce((acc, player) => acc + player.rating, 0) / sortedPlayers.length
         : 0
 
     return (
@@ -48,7 +56,7 @@ const Statistics = () => {
                                 <Bar dataKey="rating" fill="#8884d8" />
                             </BarChart>
                         </ResponsiveContainer>
-                 
+
                         <h2 className="text-xl text-white font-bold mt-8 mb-4 text-center">Calificación Promedio del Partido {averageRating.toFixed(2)}</h2>
                         <ResponsiveContainer width="100%" height={300}>
                             <BarChart data={[{ name: 'Promedio', rating: averageRating }]}>
@@ -69,5 +77,6 @@ const Statistics = () => {
 }
 
 export default Statistics
+
 
 

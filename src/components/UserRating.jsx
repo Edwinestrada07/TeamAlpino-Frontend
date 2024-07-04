@@ -1,15 +1,48 @@
-import { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faShoePrints, faFutbol } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStar, faShoePrints, faFutbol } from '@fortawesome/free-solid-svg-icons'
 
-const UserRating = ({ userId, initialRating, initialAttendance, initialGoals, onRated }) => {
-    const [rating, setRating] = useState(initialRating);
-    const [attendance, setAttendance] = useState(initialAttendance);
-    const [goals, setGoals] = useState(initialGoals);
+const UserRating = ({ userId, initialRating, initialAttendance = 0, initialGoals = 0, onRated }) => {
+    const [rating, setRating] = useState(initialRating)
+    const [goals, setGoals] = useState(initialGoals ?? 0)
+    const [attendance, setAttendance] = useState(initialAttendance ?? 0)
 
+    // Función para manejar el cambio de calificación
     const handleRatingChange = async (newRating) => {
-        const previousRating = rating;
-        setRating(newRating);
+        // Asegurarse de que previousRating esté definido
+        let previousRating = rating // Asignar el valor actual de rating a previousRating
+
+        if (newRating === 1 && rating === 1) {
+            setRating(0) // Reiniciar la calificación
+    
+            try {
+                const response = await fetch(`http://localhost:3000/user/${userId}/rating`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ rating: null }), // Enviar null para reiniciar
+                })
+    
+                if (response.ok) {
+                    onRated()
+                } else {
+                    console.error('Error al reiniciar la calificación del jugador:', response.statusText)
+                    // Revertir el estado local si hay un error
+                    setRating(previousRating)
+                }
+            } catch (error) {
+                console.error('Error al reiniciar la calificación del jugador:', error)
+                // Revertir el estado local si hay un error
+                setRating(previousRating)
+            }
+    
+            return
+        }
+    
+        // Si no se está reiniciando la calificación
+        setRating(newRating)
+    
         try {
             const response = await fetch(`http://localhost:3000/user/${userId}/rating`, {
                 method: 'PUT',
@@ -17,21 +50,26 @@ const UserRating = ({ userId, initialRating, initialAttendance, initialGoals, on
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ rating: newRating }),
-            });
-
-            if (!response.ok) {
-                throw new Error('Error al enviar la calificación del jugador');
+            })
+    
+            if (response.ok) {
+                onRated()
+            } else {
+                console.error('Error al enviar la calificación del jugador:', response.statusText)
+                // Revertir el estado local si hay un error
+                setRating(previousRating)
             }
-            onRated();
         } catch (error) {
-            console.error(error);
-            setRating(previousRating);
+            console.error('Error al enviar la calificación del jugador:', error)
+            // Revertir el estado local si hay un error
+            setRating(previousRating)
         }
-    };
-
+    }
+    
+    // Función para manejar el cambio de goles
     const handleGoalsChange = async (newGoals) => {
-        const previousGoals = goals;
-        setGoals(newGoals);
+        const previousGoals = goals
+        setGoals(newGoals)
         try {
             const response = await fetch(`http://localhost:3000/user/${userId}/goals`, {
                 method: 'PUT',
@@ -39,22 +77,23 @@ const UserRating = ({ userId, initialRating, initialAttendance, initialGoals, on
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ goals: newGoals }),
-            });
+            })
 
             if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Error al actualizar los goles');
+                const errorData = await response.json()
+                throw new Error(errorData.message || 'Error al actualizar los goles')
             }
-            onRated();
+            onRated()
         } catch (error) {
-            console.error(error);
-            setGoals(previousGoals);
+            console.error(error)
+            setGoals(previousGoals)
         }
-    };
+    }
 
+    // Función para manejar el cambio de asistencias
     const handleAttendanceChange = async (newAttendance) => {
-        const previousAttendance = attendance;
-        setAttendance(newAttendance);
+        const previousAttendance = attendance
+        setAttendance(newAttendance)
         try {
             const response = await fetch(`http://localhost:3000/user/${userId}/attendance`, {
                 method: 'PUT',
@@ -62,20 +101,20 @@ const UserRating = ({ userId, initialRating, initialAttendance, initialGoals, on
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ attendance: newAttendance }),
-            });
+            })
 
             if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || 'Error al actualizar las asistencias');
+                throw new Error(errorData.message || 'Error al actualizar las asistencias')
             }
-            onRated();
+            onRated()
         } catch (error) {
-            console.error(error);
-            setAttendance(previousAttendance);
+            console.error(error)
+            setAttendance(previousAttendance)
         }
-    };
+    }
 
-    useEffect(() => {
+    /*useEffect(() => {
         const fetchUserData = async () => {
             try {
                 const response = await fetch(`http://localhost:3000/user/${userId}`);
@@ -94,7 +133,7 @@ const UserRating = ({ userId, initialRating, initialAttendance, initialGoals, on
         if (userId) {
             fetchUserData();
         }
-    }, [userId]);
+    }, [userId]);*/
 
     return (
         <div className="flex flex-col items-center">
@@ -108,7 +147,7 @@ const UserRating = ({ userId, initialRating, initialAttendance, initialGoals, on
                     />
                 ))}
             </div>
-            <div className="flex space-x-10">
+            <div className="flex space-x-10 text-sm font-medium mr-5">
                 <div className="flex items-center">
                     <FontAwesomeIcon
                         icon={faFutbol}
@@ -127,7 +166,7 @@ const UserRating = ({ userId, initialRating, initialAttendance, initialGoals, on
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
 
-export default UserRating;
+export default UserRating
