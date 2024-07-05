@@ -10,6 +10,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
     // Estados locales para el formulario y gestión de datos
     const [name, setName] = useState('')
     const [cellNumber, setCellNumber] = useState('')
+    const [positions, setPositions] = useState('')
     const [isArcher, setIsArcher] = useState(false)
     const [error, setError] = useState('')
     const [daysLeft, setDaysLeft] = useState(0)
@@ -78,10 +79,11 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
         }
 
         // Si los campos están completos, agregar persona y reiniciar estados
-        if (name && cellNumber) {
-            addPerson({ name, cell_number: cellNumber, is_archer: isArcher })
+        if (name && cellNumber && positions) {
+            addPerson({ name, cell_number: cellNumber, is_archer: isArcher, positions })
             setName('')
             setCellNumber('')
+            setPositions('');
             setIsArcher(false)
             setError('')
             setConsecutive(consecutive + 1)
@@ -165,8 +167,8 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
             setShowPlayers(false)
             setIsLoading(false)
             setSuccessMessage('Equipos generados con éxito')
-            setTimeout(() => setSuccessMessage(''), 3000) // Ocultar mensaje de éxito después de 3 segundos
-        }, 2000) // Simular tiempo de carga de 2 segundos
+            setTimeout(() => setSuccessMessage(''), 2000) // Ocultar mensaje de éxito después de 3 segundos
+        }, 1000) // Simular tiempo de carga de 2 segundos
     }
 
     // Renderizado del componente de formulario y resultados
@@ -185,6 +187,13 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                     value={cellNumber}
                     onChange={(e) => setCellNumber(e.target.value)}
                     placeholder="Número de celular"
+                    className="bg-gray-700 text-white p-2 mb-2 rounded border-none outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                />
+                <input
+                    type="text"
+                    value={positions}
+                    onChange={(e) => setPositions(e.target.value)}
+                    placeholder="Posición Jugador"
                     className="bg-gray-700 text-white p-2 mb-2 rounded border-none outline-none focus:ring-2 focus:ring-blue-500 w-full"
                 />
                 <label className="flex items-center mb-3 text-white">

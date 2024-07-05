@@ -6,6 +6,7 @@ const PersonList = ({ persons, deletePerson, updatePerson }) => {
     const [editingId, setEditingId] = useState(null)
     const [updateName, setUpdateName] = useState('')
     const [updateCellNumber, setUpdateCellNumber] = useState('')
+    const [updatePositions, setUpdatePositions] = useState('')
     const [updateIsArcher, setUpdateIsArcher] = useState(false)
     const [error, setError] = useState('')
 
@@ -14,6 +15,7 @@ const PersonList = ({ persons, deletePerson, updatePerson }) => {
         setEditingId(person.id)
         setUpdateName(person.name)
         setUpdateCellNumber(person.cell_number)
+        setUpdatePositions(person.positions)
         setUpdateIsArcher(person.is_archer)
     }
 
@@ -25,7 +27,7 @@ const PersonList = ({ persons, deletePerson, updatePerson }) => {
             return
         }
 
-        updatePerson(id, { name: updateName, cell_number: updateCellNumber, is_archer: updateIsArcher })
+        updatePerson(id, { name: updateName, cell_number: updateCellNumber,  positions: updatePositions, is_archer: updateIsArcher })
         setEditingId(null)
         setError('')
     }
@@ -47,6 +49,12 @@ const PersonList = ({ persons, deletePerson, updatePerson }) => {
                                     type="number"
                                     value={updateCellNumber}
                                     onChange={(e) => setUpdateCellNumber(e.target.value)}
+                                    className="bg-gray-600 text-white p-3 mb-3 rounded border-none outline-none focus:ring-2 focus:ring-blue-500"
+                                />
+                                <input
+                                    type="text"
+                                    value={updatePositions}
+                                    onChange={(e) => setUpdatePositions(e.target.value)}
                                     className="bg-gray-600 text-white p-3 mb-3 rounded border-none outline-none focus:ring-2 focus:ring-blue-500"
                                 />
                                 <label className="flex items-center mb-3 text-white">
@@ -71,7 +79,7 @@ const PersonList = ({ persons, deletePerson, updatePerson }) => {
                             </>
                         ) : (
                             <>
-                                <span className="mb-3">{person.name} - {person.cell_number}</span>
+                                <span className="mb-3">{person.name} - {person.cell_number} - {person.positions}</span>
                                 <div className="flex justify-between">
                                     <button onClick={() => handleUpdate(person)} className="bg-yellow-500 text-white p-3 rounded-lg hover:bg-yellow-600 transition-colors duration-300 mr-1 w-1/2">
                                         <FontAwesomeIcon icon={faPen} />
