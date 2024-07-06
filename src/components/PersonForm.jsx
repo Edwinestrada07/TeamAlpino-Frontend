@@ -14,7 +14,6 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
     const [isArcher, setIsArcher] = useState(false)
     const [error, setError] = useState('')
     const [daysLeft, setDaysLeft] = useState(0)
-    const [consecutive, setConsecutive] = useState(26)
     const [nextGameDate, setNextGameDate] = useState('')
 
     // Estados para la gestión de grupos y visualización de jugadores
@@ -23,7 +22,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [successMessage, setSuccessMessage] = useState('')
     const [userCellNumber, setUserCellNumber] = useState('')
-    const [showVerificationInput, setShowVerificationInput] = useState(false)
+
 
     // Efecto para calcular la fecha del próximo partido y actualizarla diariamente
     useEffect(() => {
@@ -84,13 +83,12 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
             setName('')
             setCellNumber('')
             setPositions('');
-            setIsArcher(false)
-            setError('')
-            setConsecutive(consecutive + 1)
+            setIsArcher(false)   
             setSuccessMessage('Jugador registrado con éxito')
             setTimeout(() => setSuccessMessage(''), 3000) // Ocultar mensaje de éxito después de 3 segundos
         } else {
             setError('Por favor, complete todos los campos.')
+            setTimeout(() => setError(''), 2000)
         }
     }
 
@@ -140,6 +138,12 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
 
     // Función para generar grupos aleatorios
     const generateGroups = () => {
+        /*if (persons.length < 14) {
+            setError('No se pueden generar equipos hasta que la lista esté completa con 14 jugadores.')
+            setTimeout(() => setError(''), 3000)
+            return
+        }*/
+
         if (!authorizedNumbers.includes(userCellNumber)) {
             setError('Código proporcionado sin permisos para generar equipos.')
             return
@@ -179,14 +183,14 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                     type="text"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Nombre"
+                    placeholder="Nombre Jugador"
                     className="bg-gray-700 text-white p-2 mb-2 rounded border-none outline-none focus:ring-2 focus:ring-blue-500 w-full"
                 />
                 <input
                     type="number"
                     value={cellNumber}
                     onChange={(e) => setCellNumber(e.target.value)}
-                    placeholder="Número de celular"
+                    placeholder="Número Celular"
                     className="bg-gray-700 text-white p-2 mb-2 rounded border-none outline-none focus:ring-2 focus:ring-blue-500 w-full"
                 />
                 <input
@@ -218,12 +222,11 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
 
                 <div className="text-white mb-4">
                     <div className="bg-blue-500 text-white p-2 rounded-lg shadow-lg">
-                        <h2>Próximo Partido</h2>
+                        <h2 className="text-xl text-center  font-bold">Próximo Partido</h2>
                         <p>Fecha: {nextGameDate}</p>
                         <p>Hora: 8:30 PM</p>
-                        <p>Ubicación: Pista de Santana</p>
+                        <p>Ubicación: Cancha de la patria</p>
                         <p>Días restantes: {daysLeft}</p>
-                        <p>Consecutiva: {consecutive}</p>
                     </div>
                 </div>
 
@@ -232,7 +235,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                         type="password"
                         value={userCellNumber}
                         onChange={(e) => setUserCellNumber(e.target.value)}
-                        placeholder="Digitar Código"
+                        placeholder="Ingrese Código"
                         className="bg-gray-700 text-white p-2 rounded-l border-none outline-none focus:ring-2 focus:ring-blue-500 w-full"
                     />
                     <button
@@ -248,7 +251,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                         onClick={generateGroups}
                         className="bg-green-500 text-white p-2 rounded w-full hover:bg-green-600 transition-colors duration-300"
                     >
-                        {isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : 'Generar equipos'}
+                        {isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : 'Ingrese Código Generar equipos'}
                     </button>
                 </div>
             </form>

@@ -35,8 +35,8 @@ const PersonList = ({ persons, deletePerson, updatePerson }) => {
     return (
         <div className="flex justify-center items-center p-4 bg-gray-900 rounded-lg shadow-lg ">            
             <ul className="grid grid-cols-1 md:grid-cols-5 gap-2 p-3 bg-gray-600 rounded-lg shadow-lg w-11/12 md:w-3/1">
-                {persons.map((person) => (
-                    <li key={`${person.name}-${person.cell_number}`} className="bg-gray-700 text-white p-2 rounded shadow-lg flex flex-col justify-between">
+                {persons.map((person, index) => (
+                    <li key={person.id || index} className="bg-gray-700 text-white p-2 rounded shadow-lg flex flex-col justify-between">
                         {editingId === person.id ? (
                             <>
                                 <input
