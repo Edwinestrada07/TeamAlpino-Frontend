@@ -58,4 +58,10 @@
     animation: slide-in-slow 0.5s forwards;
 }
 
+/* En tu archivo CSS o dentro de un bloque <style> en tu componente */
+.bg-mosaic {
+    background: url('img/logo.png') repeat; /* Reemplaza 'URL_DE_TU_IMAGEN' con la URL de tu imagen */
+    background-size: 180px; /* Ajusta el tamaño del mosaico */
+}
+
 

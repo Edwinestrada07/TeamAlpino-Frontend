@@ -109,9 +109,9 @@ const Statistics = () => {
                     </div>
 
                     {topPlayer && (
-                        <div className="mt-8 bg-green-600 text-white text-center p-4 rounded-lg shadow-lg animate-pulse">
+                        <div className="mt-8 bg-green-600 text-white text-center p-4 rounded-lg shadow-lg animate-bounce-slow">
                             <h2 className="text-2xl font-bold mb-2">Jugador Destacado</h2>
-                            <p>{topPlayer.name} fue el jugador destacado con una calificación de {topPlayer.rating.toFixed(2)}, {topPlayer.goals} goles y {topPlayer.attendance} asistencias.</p>
+                            <p>{topPlayer.name} fue el jugador destacado con una calificación de {topPlayer.rating} estrellas, {topPlayer.goals} goles y {topPlayer.attendance} asistencias.</p>
                         </div>
                     )}
                 </div>

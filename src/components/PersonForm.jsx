@@ -177,7 +177,8 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
 
     // Renderizado del componente de formulario y resultados
     return (
-        <div className="flex flex-col items-center w-full sm:w-3/4 lg:w-1/2 mx-auto">
+        <div className="bg-mosaic">
+            <div className="flex flex-col items-center w-full sm:w-3/4 lg:w-1/2 mx-auto">
             <form onSubmit={handleSubmit} className="bg-gray-900 p-5 rounded-lg shadow-lg w-full max-w-lg">
                 <input
                     type="text"
@@ -270,6 +271,8 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                 </div>
             )}
         </div>
+        </div>
+        
     )
 }
 
