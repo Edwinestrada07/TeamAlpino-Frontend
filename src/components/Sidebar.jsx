@@ -26,27 +26,27 @@ const Sidebar = () => {
                     <h1 className={`text-2xl font-bold ${isOpen ? 'block' : 'hidden'}`}>Team Lpino</h1>
                 </div>
                 <nav className="mt-2">
-                    <Link to="/" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <Link to="/" className="py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
                         <FontAwesomeIcon icon={faHome} className="mr-4" />
                         {isOpen && <span>Inicio</span>}
                     </Link>
-                    <Link to="/userprofile" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <Link to="/userprofile" className="py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
                         <FontAwesomeIcon icon={faUser} className="mr-4" />
                         {isOpen && <span>Perfil Jugador</span>}
                     </Link>
-                    <Link to="/uniforms" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <Link to="/uniforms" className="py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
                         <FontAwesomeIcon icon={faTshirt} className="mr-4" />
                         {isOpen && <span>Uniformes</span>}
                     </Link>
-                    <Link to="/statistics" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <Link to="/statistics" className="py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
                         <FontAwesomeIcon icon={faChartSimple} className="mr-4" />
                         {isOpen && <span>Estadística Juego</span>}
                     </Link>
-                    <Link to="/news" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <Link to="/news" className="py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
                         <FontAwesomeIcon icon={faNewspaper} className="mr-4" />
                         {isOpen && <span>Noticias</span>}
                     </Link>
-                    <Link to="/paymentsmethods" className="block py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
+                    <Link to="/paymentsmethods" className="py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
                         <FontAwesomeIcon icon={faCreditCard} className="mr-4" />
                         {isOpen && <span>Medios de Pago</span>}
                     </Link>
