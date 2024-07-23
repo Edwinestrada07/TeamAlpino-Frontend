@@ -6,7 +6,7 @@ const MyComponent = () => {
     const [data, setData] = useState(null)
 
     useEffect(() => {
-        fetchFromApi('https://teamalpinobackend.onrender.com')
+        fetchFromApi('https://teamalpino-backend.onrender.com')
         .then((data) => setData(data))
         .catch((error) => console.error('Error al obtener datos:', error))
     }, [])

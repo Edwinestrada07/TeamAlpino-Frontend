@@ -1,4 +1,4 @@
-const apiUrl = 'https://teamalpinobackend.onrender.com'
+const apiUrl = 'https://teamalpino-backend.onrender.com'
 
 export const fetchFromApi = (endpoint) => {
     return fetch(`${apiUrl}/${endpoint}`, {

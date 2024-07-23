@@ -44,7 +44,7 @@ const UserRating = ({ userId, initialRating, initialAttendance = 0, initialGoals
         setRating(newRating)
     
         try {
-            const response = await fetch(`https://teamalpinobackend.onrender.com/user/${userId}/rating`, {
+            const response = await fetch(`http://localhost:3000/user/${userId}/rating`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -71,7 +71,7 @@ const UserRating = ({ userId, initialRating, initialAttendance = 0, initialGoals
         const previousGoals = goals
         setGoals(newGoals)
         try {
-            const response = await fetch(`https://teamalpinobackend.onrender.com/user/${userId}/goals`, {
+            const response = await fetch(`http://localhost:3000/user/${userId}/goals`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -95,7 +95,7 @@ const UserRating = ({ userId, initialRating, initialAttendance = 0, initialGoals
         const previousAttendance = attendance
         setAttendance(newAttendance)
         try {
-            const response = await fetch(`https://teamalpinobackend.onrender.com/user/${userId}/attendance`, {
+            const response = await fetch(`http://localhost:3000/user/${userId}/attendance`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
