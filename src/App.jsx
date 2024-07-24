@@ -22,7 +22,7 @@ const App = () => {
         // fetchPersons: Es una función asíncrona que realiza una solicitud a la API
         const fetchPersons = async () => {
             try {
-                const response = await fetch('http://localhost:3000/user') // Realiza una solicitud GET a la URL especificada
+                const response = await fetch('https://teamalpino-backend.onrender.com/user') // Realiza una solicitud GET a la URL especificada
                 if (!response.ok) {
                     throw new Error('La respuesta de la red no fue correcta')
                 }
@@ -39,7 +39,7 @@ const App = () => {
     // Función para agregar una persona
     const addPerson = async (person) => {
         try {
-            const response = await fetch('http://localhost:3000/user', {
+            const response = await fetch('https://teamalpino-backend.onrender.com/user', {
                 method: 'POST',
                 headers: { // Define los encabezados de la solicitud, para indicar que el cuerpo de la solicitud contiene datos en formato JSON
                     'Content-Type': 'application/json'

@@ -3,21 +3,33 @@ import { fetchFromApi } from '../services/api'
 import { supabase } from '../services/supabaseClient'
 
 const MyComponent = () => {
-    const [data, setData] = useState(null)
+    const [apiData, setApiData] = useState(null)
+    const [supabaseData, setSupabaseData] = useState(null)
+    const [error, setError] = useState(null)
 
     useEffect(() => {
-        fetchFromApi('https://teamalpino-backend.onrender.com')
-        .then((data) => setData(data))
-        .catch((error) => console.error('Error al obtener datos:', error))
+        const fetchDataFromApi = async () => {
+            try {
+                const data = await fetchFromApi('user') // Ajustamos el endpoint a 'user'
+                setApiData(data)
+            } catch (error) {
+                console.error('Error al obtener datos de la API:', error)
+                setError('Error al obtener datos de la API')
+            }
+        }
+        fetchDataFromApi()
     }, [])
 
-    // Ejemplo de uso de Supabase
     const fetchDataFromSupabase = async () => {
         const { data, error } = await supabase
-        .from('Users') // Reemplaza 'nombre_de_tu_tabla' con el nombre real de tu tabla
-        .select('*')
-        if (error) console.error('Error al recuperar datos de Supabase:', error)
-        else setData(data)
+            .from('Users') // Reemplaza 'Users' con el nombre real de tu tabla
+            .select('*')
+        if (error) {
+            console.error('Error al recuperar datos de Supabase:', error)
+            setError('Error al recuperar datos de Supabase')
+        } else {
+            setSupabaseData(data)
+        }
     }
 
     useEffect(() => {
@@ -26,9 +38,16 @@ const MyComponent = () => {
 
     return (
         <div>
-            {data ? JSON.stringify(data) : 'Cargando datos...'}
+            {error && <p>{error}</p>}
+            <h2>Datos de la API:</h2>
+            {apiData ? <pre>{JSON.stringify(apiData, null, 2)}</pre> : 'Cargando datos de la API...'}
+
+            <h2>Datos de Supabase:</h2>
+            {supabaseData ? <pre>{JSON.stringify(supabaseData, null, 2)}</pre> : 'Cargando datos de Supabase...'}
         </div>
     )
 }
 
 export default MyComponent
+
+
