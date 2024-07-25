@@ -25,15 +25,15 @@ const Uniforms = () => {
 
     return (
         <section className="flex-1 flex flex-col justify-center items-center min-h-screen bg-gray-900">
-            <h1 className="text-3xl font-bold text-center text-white mb-6">
+            <h1 className="text-2xl font-bold text-center text-white m-10">
                 <FontAwesomeIcon icon={faShirt} className="mr-2 text-2xl" /> Uniformes de Jugadores Lpino
             </h1>
 
-            <div className="flex flex-wrap justify-center gap-6">
+            <div className="flex flex-wrap justify-center gap-6 p-5">
                 {uniforms.map((uniform) => (
                     <div
                         key={uniform.id}
-                        className="w-full max-w-xs mb-10 bg-gray-800 rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer"
+                        className="w-full max-w-xs mb-5 bg-gray-700 rounded-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-lg cursor-pointer"
                         onClick={() => setSelectedImage(uniform.src)}
                     >
                         <div className="overflow-hidden border-b-2 border-gray-700">

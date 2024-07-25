@@ -11,8 +11,8 @@ const News = () => {
     }
 
     return (
-        <section className="flex-1 flex flex-col justify-center items-center min-h-screen bg-gray-900">
-            <h1 className="text-3xl font-bold text-center text-white mb-6">
+        <section className="flex-1 flex flex-col p-5 justify-center items-center min-h-screen bg-gray-900">
+            <h1 className="text-2xl font-bold text-center text-white mb-6">
                 <FontAwesomeIcon icon={faNewspaper} className="mr-2 text-2xl" /> Enlaces de Interés
             </h1>
 
@@ -33,9 +33,9 @@ const News = () => {
                         </h1>
                         <button
                             onClick={handleClick}
-                            className="bg-blue-500 text-white p-3 m-4 rounded-lg hover:bg-blue-600 transition-colors duration-300"
+                            className="bg-green-600 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-300"
                         >
-                            Click AQUÍ para Noticias de Deportes
+                            Click AQUÍ 
                         </button>
                     </div>
                 </div>
@@ -58,9 +58,9 @@ const News = () => {
                         </h1>
                         <button
                             onClick={handleClick2}
-                            className="bg-blue-500 text-white p-3 m-4 rounded-lg hover:bg-blue-600 transition-colors duration-300"
+                            className="bg-green-600 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-300"
                         >
-                            Click AQUÍ para ingresar a Roja Directa
+                            Click AQUÍ 
                         </button>
                     </div>
                 </div>

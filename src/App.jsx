@@ -70,8 +70,8 @@ const App = () => {
                             path="/"
                             element={
                                 <div className="container mx-auto p-2 bg-gray-800 rounded-lg">
-                                    <h1 className="text-3xl font-bold text-center text-white mb-2">
-                                        <FontAwesomeIcon icon={faFutbol} className="mr-2" /> Lista de Jugadores Lpino
+                                    <h1 className="text-2xl font-bold text-center text-white mb-1">
+                                        <FontAwesomeIcon icon={faFutbol} className="" /> Lista de Jugadores Lpino
                                     </h1>
                                     <PersonForm addPerson={addPerson} persons={persons} />
                                 </div>

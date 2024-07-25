@@ -1,5 +1,5 @@
-import { faFutbol } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFutbol } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 
 const UserProfile = () => {
@@ -34,7 +34,7 @@ const UserProfile = () => {
 
     return (
         <div className="flex-1 flex flex-col justify-center items-center min-h-screen bg-gray-900">
-            <div className="bg-gray-800 p-10 rounded-lg shadow-lg">
+            <div className="bg-gray-800 p-2 rounded-lg shadow-lg">
                 <h1 className="text-2xl font-bold text-center text-white mb-6">Buscar Jugador</h1>
                 <div className="mb-4 flex">
                     <input
@@ -68,8 +68,8 @@ const UserProfile = () => {
                 )}
             </div>
         </div>
-    );
+    )
     
-};
+}
 
-export default UserProfile;
+export default UserProfile

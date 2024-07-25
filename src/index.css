@@ -58,10 +58,90 @@
     animation: slide-in-slow 0.5s forwards;
 }
 
+
 /* En tu archivo CSS o dentro de un bloque <style> en tu componente */
 .bg-mosaic {
-    background: url('img/logo.png') repeat; /* Reemplaza 'URL_DE_TU_IMAGEN' con la URL de tu imagen */
+    background: url('../dist/img/logo.png') repeat; /* Reemplaza 'URL_DE_TU_IMAGEN' con la URL de tu imagen */
     background-size: 180px; /* Ajusta el tamaño del mosaico */
 }
+
+/*>>>>>>>>>>>>>>>>>DISEÑO RESPONSIVO<<<<<<<<<<<<<<<<<<<<<<<<*/
+/* Estilos generales */
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* Contenedor principal */
+.container {
+    padding: 20px;
+    margin: 0 auto;
+}
+
+/* Estilos de título */
+h1 {
+    font-size: 2.5em;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Estilos específicos para móviles */
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.8em;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .sidebar {
+        display: none; /* Ocultar la barra lateral en pantallas pequeñas */
+    }
+
+    .content {
+        margin-left: 0; /* Ajustar el margen del contenido cuando la barra lateral está oculta */
+    }
+}
+
+/* Estilos específicos para tablets */
+@media (min-width: 601px) and (max-width: 1024px) {
+    h1 {
+        font-size: 2em;
+    }
+
+    .container {
+        padding: 15px;
+    }
+
+    .sidebar {
+        width: 150px; /* Reducir el ancho de la barra lateral en pantallas medianas */
+    }
+
+    .content {
+        margin-left: 150px; /* Ajustar el margen del contenido */
+    }
+}
+
+/* Estilos específicos para pantallas grandes */
+@media (min-width: 1025px) {
+    h1 {
+        font-size: 2.5em;
+    }
+
+    .container {
+        max-width: 1200px;
+    }
+
+    .sidebar {
+        width: 200px;
+    }
+
+    .content {
+        margin-left: 200px;
+    }
+}
+
 
 

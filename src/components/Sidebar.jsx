@@ -23,9 +23,8 @@ const Sidebar = () => {
             <div className={`bg-gray-700 text-white h-full ${isOpen ? 'w-64' : 'w-16'}`}>
                 <div className="p-4">
                     <FontAwesomeIcon icon={faFutbol} className="mr-2" />
-                    <h1 className={`text-2xl font-bold ${isOpen ? 'block' : 'hidden'}`}>Team Lpino</h1>
                 </div>
-                <nav className="mt-2">
+                <nav className="">
                     <Link to="/" className="py-2.5 px-4 rounded transition duration-200 hover:bg-gray-700 hover:text-white flex items-center">
                         <FontAwesomeIcon icon={faHome} className="mr-4" />
                         {isOpen && <span>Inicio</span>}

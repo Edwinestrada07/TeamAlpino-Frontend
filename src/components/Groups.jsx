@@ -47,7 +47,7 @@ const Groups = ({ groups }) => {
         <div className="relative mt-8">
             <button 
                 onClick={handleGenerateGroups} 
-                className="fixed right-8 top-16 bg-blue-500 text-white text-lg p-2 rounded-full hover:bg-blue-600 transition-colors duration-300 z-50 shadow-lg animate-bounce-slow"
+                className="fixed right-8 top-16 bg-green-600 text-white text-lg p-2 rounded-full hover:bg-blue-600 transition-colors duration-300 z-50 shadow-lg animate-bounce-slow"
             >
                 <FontAwesomeIcon icon={faFutbol} className="animate-spin-slow text-xl mr-2" />
                 Ver equipos
