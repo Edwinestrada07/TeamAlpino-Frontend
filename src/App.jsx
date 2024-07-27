@@ -71,21 +71,18 @@ const App = () => {
                             element={
                                 <div className="container mx-auto p-2 bg-gray-800 rounded-lg">
                                     <h1 className="text-2xl font-bold text-center text-white mb-1">
-                                        <FontAwesomeIcon icon={faFutbol} className="" /> Lista de Jugadores Lpino
+                                        <FontAwesomeIcon icon={faFutbol} /> Lista de Jugadores Lpino
                                     </h1>
                                     <PersonForm addPerson={addPerson} persons={persons} />
                                 </div>
                             }
                         />
-                        <Route path="/" exact component={PersonForm} />
-                        <Route path="/groups" component={Groups} />
-                        
+                        <Route path="/groups" element={<Groups />} />
                         <Route path="/userprofile" element={<UserProfile />} />
-                        <Route path="/uniforms" element={<Uniforms />} />      
+                        <Route path="/uniforms" element={<Uniforms />} />
                         <Route path="/statistics" element={<Statistics />} />
                         <Route path="/news" element={<News />} />
-                        <Route path="/paymentsmethods" element={<PaymentMethods />} />
-                        {/* Añade otras rutas aquí */}
+                        <Route path="/paymentmethods" element={<PaymentMethods />} />
                     </Routes>
                 </div>
             </div>

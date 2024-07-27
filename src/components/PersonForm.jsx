@@ -1,4 +1,4 @@
-import { faHand, faSpinner } from "@fortawesome/free-solid-svg-icons"
+import { faFutbol, faHand, faSpinner } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useEffect, useState } from "react"
 import Groups from "./Groups"
@@ -15,6 +15,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
     const [error, setError] = useState('')
     const [daysLeft, setDaysLeft] = useState(0)
     const [nextGameDate, setNextGameDate] = useState('')
+    const [isLoadingPlayers, setIsLoadingPlayers] = useState(false) // Nuevo estado para la carga de jugadores
 
     // Estados para la gestión de grupos y visualización de jugadores
     const [showPlayers, setShowPlayers] = useState(false)
@@ -60,7 +61,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
 
         // Validaciones antes de agregar una nueva persona
         if (totalPersons >= 14) {
-            setError('Plantilla completada, ingrese código.')
+            setError('Plantilla completada, ingrese código para generar equipos.')
             setTimeout(() => setError(''), 2000)
             return
         }
@@ -175,6 +176,16 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
         }, 1000) // Simular tiempo de carga de 2 segundos
     }
 
+    // Función para manejar el botón de ver jugadores registrados
+    const handleViewPlayers = async () => {
+        setIsLoadingPlayers(true)
+        // Simulación de carga; en un caso real, aquí puedes hacer una llamada a la API para obtener los jugadores
+        setTimeout(() => {
+            setShowPlayers(true)
+            setIsLoadingPlayers(false)
+        }, 3000) // Simula 3 segundo de tiempo de carga
+    }
+
     // Renderizado del componente de formulario y resultados
     return (
         <div className="bg-mosaic">
@@ -198,7 +209,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                     type="text"
                     value={positions}
                     onChange={(e) => setPositions(e.target.value)}
-                    placeholder="Posición Jugador"
+                    placeholder="Posición(es)"
                     className="bg-gray-700 text-white p-2 mb-2 rounded border-none outline-none focus:ring-2 focus:ring-blue-500 w-full"
                 />
                 <label className="flex items-center mb-3 text-white">
@@ -240,10 +251,16 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                         className="bg-gray-700 text-white p-2 rounded-l border-none outline-none focus:ring-2 focus:ring-blue-500 w-full"
                     />
                     <button
-                        onClick={() => setShowPlayers(true)}
+                        onClick={handleViewPlayers}
                         className="bg-blue-500 text-white p-2 rounded-r hover:bg-blue-600 transition-colors duration-300 ml-2 w-full"
-                    >
-                        Ver Jugadores Registrados
+                    >    
+                        <p>Jugadores Registrados</p>
+
+                        {isLoadingPlayers  && ( 
+                        <p>
+                            Cargando... <FontAwesomeIcon icon={faSpinner} spin />
+                        </p>
+                        )}
                     </button>
                 </div>
 
