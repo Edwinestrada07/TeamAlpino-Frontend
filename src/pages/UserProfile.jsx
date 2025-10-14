@@ -11,7 +11,7 @@ const UserProfile = () => {
     const fetchUserData = async (name) => {
         setLoading(true)
         try {
-            const response = await fetch(`https://teamalpino-backend.onrender.com/user/${name}`)
+            const response = await fetch(`http://localhost:3000/user/${name}`)
             if (!response.ok) {
                 setError('Jugador no encontrado, verifica la información.')
                 setTimeout(() => setError(''), 2000)

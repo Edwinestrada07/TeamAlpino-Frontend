@@ -96,7 +96,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
     // Función para eliminar una persona por su ID
     const handleDeletePerson = async (id) => {
         try {
-            await fetch(`https://teamalpino-backend.onrender.com/user/${id}`, {
+            await fetch(`http://localhost:3000/user/${id}`, {
                 method: 'DELETE',
             })
             // Llamar a la función deletePerson que está pasada como prop
@@ -112,7 +112,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
     // Función para actualizar los datos de una persona por su ID
     const handleUpdatePerson = async (id, updatedPerson) => {
         try {
-            const response = await fetch(`https://teamalpino-backend.onrender.com/user/${id}`, {
+            const response = await fetch(`http://localhost:3000/user/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -295,3 +295,4 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
 
 export default PersonForm
 
+//https://teamalpino-backend.onrender.com/user/david
