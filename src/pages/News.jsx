@@ -2,69 +2,64 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faNewspaper } from '@fortawesome/free-solid-svg-icons'
 
 const News = () => {
-    const handleClick = () => {
-        window.location.href = 'https://www.marca.com/futbol/futbol-internacional.html' // URL de la página de noticias deportivas
-    }
-
-    const handleClick2 = () => {
-        window.location.href = 'https://rojadirectaenhd.net/' // URL de la página deportivas
-    }
+    const links = [
+        {
+            id: 1,
+            title: 'El siguiente link te va a redirigir a las noticias de deportes',
+            button: 'Ir a Marca',
+            url: 'https://www.marca.com/futbol/futbol-internacional.html',
+            image: 'img/banner_copa.jpg',
+        },
+        {
+            id: 2,
+            title: 'El siguiente link te va a redirigir a Roja Directa para los partidos del día',
+            button: 'Ir a Roja Directa',
+            url: 'https://rojadirectaenhd.net/',
+            image: 'img/Banner-futbol.jpg',
+        },
+    ]
 
     return (
-        <section className="flex-1 flex flex-col p-5 justify-center items-center min-h-screen bg-gray-900">
-            <h1 className="text-2xl font-bold text-center text-white mb-6">
-                <FontAwesomeIcon icon={faNewspaper} className="mr-2 text-2xl" /> Enlaces de Interés
+        <section className="flex-1 flex flex-col justify-center items-center min-h-screen bg-gray-900 p-6">
+            {/* Encabezado */}
+            <h1 className="text-3xl font-bold text-center text-white mb-10 flex items-center gap-3">
+                <FontAwesomeIcon icon={faNewspaper} className="text-green-400 text-3xl" />
+                Enlaces de Interés
             </h1>
 
-            <div
-                className="body-font rounded-lg shadow-lg transform transition-transform duration-500 hover:scale-105"
-                style={{
-                    backgroundImage: 'url(img/banner_copa.jpg)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    height: '200px',
+            {/* Tarjetas */}
+            <div className="flex flex-col gap-8 w-full max-w-5xl">
+                {links.map((link) => (
+                <div
+                    key={link.id}
+                    className="relative rounded-xl overflow-hidden shadow-lg transition-transform transform hover:scale-[1.02] hover:shadow-green-400/20 cursor-pointer"
+                    style={{
+                        backgroundImage: `url(${link.image})`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                        height: '220px',
                     }}
-            >
-                <div className="container px-3 py-20 mx-auto bg-gray-900 bg-opacity-50 rounded-lg h-full flex items-center">
-                    <div className="lg:w-2/3 flex flex-col sm:flex-row sm:items-center items-start mx-auto">
-                        <h1 className="flex-grow sm:pr-16 text-2xl font-medium title-font text-white">
-                            El siguiente link te va a redirigir a las noticias de deportes
-                        </h1>
-                        <button
-                            onClick={handleClick}
-                            className="bg-green-600 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-300"
-                        >
-                            Click AQUÍ 
-                        </button>
+                >
+                    {/* Overlay semitransparente */}
+                    <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm flex items-center justify-center">
+                        <div className="px-6 text-center max-w-2xl">
+                            <h2 className="text-2xl font-semibold text-white mb-6 drop-shadow-lg">
+                                
+                            </h2>
+                            <a
+                                href={link.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-block bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-all duration-300 font-medium text-lg shadow-md hover:shadow-green-400/20"
+                                >
+                                {link.button}
+                            </a>
+                        </div>
                     </div>
                 </div>
+                ))}
             </div>
-
-            <section
-                className="text-gray-400 bg-gray-900 body-font rounded-lg shadow-lg transform transition-transform duration-500 hover:scale-105 mt-6"
-                style={{
-                    backgroundImage: 'url(img/Banner-futbol.jpg)',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    height: '200px',
-                }}
-            >
-                <div className="container px-3 py-20 mx-auto bg-gray-900 bg-opacity-50 rounded-lg h-full flex items-center">
-                    <div className="lg:w-2/3 flex flex-col sm:flex-row sm:items-center items-start mx-auto">
-                        <h1 className="flex-grow sm:pr-16 text-2xl font-medium title-font text-white">
-                            El siguiente link te va a redirigir a Roja Directa para los partidos del día
-                        </h1>
-                        <button
-                            onClick={handleClick2}
-                            className="bg-green-600 text-white p-3 rounded-lg hover:bg-blue-600 transition-colors duration-300"
-                        >
-                            Click AQUÍ 
-                        </button>
-                    </div>
-                </div>
-            </section>
         </section>
     )
 }

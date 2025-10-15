@@ -24,17 +24,27 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
     const [successMessage, setSuccessMessage] = useState('')
     const [userCellNumber, setUserCellNumber] = useState('')
 
+	// 🔄 Nueva función para recargar jugadores al instante
+	const fetchPersons = async () => {
+		try {
+		const response = await fetch('http://localhost:3000/user')
+		const data = await response.json()
+		updatePerson(null, data, true) // se pasa bandera para indicar actualización total
+		} catch (err) {
+		console.error('Error al recargar jugadores', err)
+		}
+	}
 
     // Efecto para calcular la fecha del próximo partido y actualizarla diariamente
     useEffect(() => {
         const getNextWednesday = () => {
-            const today = new Date()
-            const dayOfWeek = today.getDay()
-            const daysUntilNextWednesday = (3 - dayOfWeek + 7) % 7
-            const nextWednesday = new Date(today)
-            nextWednesday.setDate(today.getDate() + daysUntilNextWednesday)
-            return nextWednesday
-        }
+			const today = new Date()
+			const dayOfWeek = today.getDay()
+			const daysUntilNextWednesday = (3 - dayOfWeek + 7) % 7
+			const nextWednesday = new Date(today)
+			nextWednesday.setDate(today.getDate() + daysUntilNextWednesday)
+			return nextWednesday
+		}
 
         const updateGameInfo = () => {
             const nextGame = getNextWednesday()
@@ -53,45 +63,27 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
     }, [])
 
     // Función para manejar la presentación del formulario
-    const handleSubmit = (e) => {
-        e.preventDefault()
+    const handleSubmit = async (e) => {
+		e.preventDefault()
+		if (!name || !cellNumber || !positions) {
+			setError('Por favor, complete todos los campos.')
+			setTimeout(() => setError(''), 2000)
+			return
+		}
 
-        const totalPersons = persons.length
-        const archerCount = persons.filter(person => person.is_archer).length
-
-        // Validaciones antes de agregar una nueva persona
-        if (totalPersons >= 14) {
-            setError('Plantilla completada, ingrese código para generar equipos.')
-            setTimeout(() => setError(''), 2000)
-            return
-        }
-
-        if (isArcher && archerCount >= 2) {
-            setError('Ya hay dos arqueros registrados. Debe modificar uno.')
-            setTimeout(() => setError(''), 2000)
-            return
-        }
-
-        if (!isArcher && (totalPersons - archerCount) === 12) {
-            setError('Ya se ha excedido el número máximo de jugadores.')
-            setTimeout(() => setError(''), 2000)
-            return
-        }
-
-        // Si los campos están completos, agregar persona y reiniciar estados
-        if (name && cellNumber && positions) {
-            addPerson({ name, cell_number: cellNumber, is_archer: isArcher, positions })
-            setName('')
-            setCellNumber('')
-            setPositions('');
-            setIsArcher(false)   
-            setSuccessMessage('Jugador registrado con éxito')
-            setTimeout(() => setSuccessMessage(''), 3000) // Ocultar mensaje de éxito después de 3 segundos
-        } else {
-            setError('Por favor, complete todos los campos.')
-            setTimeout(() => setError(''), 2000)
-        }
-    }
+		try {
+			await addPerson({ name, cell_number: cellNumber, is_archer: isArcher, positions })
+			await fetchPersons()
+			setName('')
+			setCellNumber('')
+			setPositions('')
+			setIsArcher(false)
+			setSuccessMessage('Jugador registrado con éxito')
+			setTimeout(() => setSuccessMessage(''), 3000)
+		} catch {
+		setError('Error al registrar jugador.')
+		}
+	}
 
     // Función para eliminar una persona por su ID
     const handleDeletePerson = async (id) => {
@@ -160,7 +152,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
             if (arqueros.length < 2) {
                 setError('Debe haber al menos dos arqueros registrados para generar equipos.')
                 setIsLoading(false)
-                setTimeout(() => setError(''), 3000)
+                setTimeout(() => setError(''), 5000)
                 return
             }
 
@@ -209,7 +201,7 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                     type="text"
                     value={positions}
                     onChange={(e) => setPositions(e.target.value)}
-                    placeholder="Posición(es)"
+                    placeholder="Posición (Ej: Delantero, Defensa...)"
                     className="bg-gray-700 text-white p-2 mb-2 rounded border-none outline-none focus:ring-2 focus:ring-blue-500 w-full"
                 />
                 <label className="flex items-center mb-3 text-white">
@@ -224,17 +216,18 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
 
                 <button
                     type="submit"
-                    className="bg-blue-500 text-white p-2 rounded-lg w-full hover:bg-blue-600 transition-colors duration-300 mb-2"
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white p-2 mb-2 rounded-lg transition-all duration-300 flex justify-center items-center gap-2"
                 >
-                    Agregar
+                    Agregar Jugador
+					<FontAwesomeIcon icon={faFutbol} />
                 </button>
 
-                {error && <div className="bg-red-500 text-white p-2 rounded mb-2">{error}</div>}
-                {successMessage && <div className="bg-green-500 text-white p-2 rounded mb-2">{successMessage}</div>}
+                {error && <div className="bg-red-600 text-white p-2 rounded text-center">{error}</div>}
+                {successMessage && <div className="bg-green-600 text-white p-2 rounded text-center">{successMessage}</div>}
 
                 <div className="text-white mb-4">
-                    <div className="bg-blue-500 text-white p-2 rounded-lg shadow-lg">
-                        <h2 className="text-xl text-center  font-bold">Próximo Partido</h2>
+                    <div className="bg-blue-700 text-white p-3 rounded-lg text-center mt-4 shadow">
+                        <h3 className="font-bold text-lg">Próximo Partido</h3>
                         <p>Fecha: {nextGameDate}</p>
                         <p>Hora: 8:30 PM</p>
                         <p>Ubicación: Cancha de la patria</p>
@@ -252,14 +245,14 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                     />
                     <button
                         onClick={handleViewPlayers}
-                        className="bg-blue-500 text-white p-2 rounded-r hover:bg-blue-600 transition-colors duration-300 ml-2 w-full"
+                        className="bg-blue-700 text-white p-2 rounded-r hover:bg-blue-600 transition-colors duration-300 ml-2 w-full"
                     >    
                         <p>Jugadores Registrados</p>
 
-                        {isLoadingPlayers  && ( 
-                        <p>
-                            Cargando... <FontAwesomeIcon icon={faSpinner} spin />
-                        </p>
+                        {isLoadingPlayers && (
+                            <p>
+                                Cargando... <FontAwesomeIcon icon={faSpinner} spin />
+                            </p>
                         )}
                     </button>
                 </div>
@@ -267,9 +260,9 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                 <div className="mt-2 w-full">
                     <button
                         onClick={generateGroups}
-                        className="bg-green-500 text-white p-2 rounded w-full hover:bg-green-600 transition-colors duration-300"
+                        className="bg-green-600 text-white p-2 rounded w-full hover:bg-green-600 transition-colors duration-300"
                     >
-                        {isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : 'Ingrese Código Generar equipos'}
+                        {isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : 'Ingrese el código para generar los equipos'}
                     </button>
                 </div>
             </form>
