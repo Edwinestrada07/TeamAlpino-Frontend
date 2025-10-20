@@ -265,6 +265,8 @@ const PersonForm = ({ addPerson, persons, deletePerson, updatePerson }) => {
                         {isLoading ? <FontAwesomeIcon icon={faSpinner} spin /> : 'Ingrese el código para generar los equipos'}
                     </button>
                 </div>
+
+                <h2 className="text-xl mt-2 font-bold text-center text-white">"Un club de amigos, un equipo que juega al fútbol"</h2>
             </form>
 
             <div className={`fixed top-0 h-full w-full bg-gray-900 transition-transform transform duration-700 ${showPlayers ? 'translate-x-0' : 'translate-x-full'} w-3/4 p-4 overflow-y-auto sm:w-full`}>
